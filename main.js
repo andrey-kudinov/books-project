@@ -1,5 +1,8 @@
-let navToggle = document.querySelector(".nav__toggle");
-let navWrapper = document.querySelector(".nav__wrapper");
+import './reset.css'
+import './style.scss'
+
+const navToggle = document.querySelector(".nav__toggle");
+const navWrapper = document.querySelector(".nav__wrapper");
 const navItems = document.querySelectorAll(".nav__item");
 
 navToggle.addEventListener("click", function () {

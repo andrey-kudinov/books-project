@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Books project</title>
+    <title>Users</title>
   </head>
   <body>
     <body>
       <header class="site-header">
         <div class="wrapper site-header__wrapper">
           <div class="site-header__start">
-            <a href="../../index.html" class="brand">Brand</a>
+            <a href="../index.html" class="brand">Brand</a>
           </div>
 
           <div class="search">
@@ -35,22 +35,22 @@
                 menu
               </button>
               <ul class="nav__wrapper">
-                <li class="nav__item active">
-                  <a href="#">
+                <li class="nav__item">
+                  <a href="/nested/books.html">
                     <img src="../../images/books.svg" alt="" />
                     <span>Books</span>
                   </a>
                 </li>
 
                 <li class="nav__item">
-                  <a href="/pages/bookmarks/bookmarks.html">
+                  <a href="/nested/bookmarks.html">
                     <img src="../../images/bookmarks.svg" alt="" />
                     <span>Bookmarks</span>
                   </a>
                 </li>
 
-                <li class="nav__item">
-                  <a href="/pages/users/users.html">
+                <li class="nav__item active">
+                  <a href="#">
                     <img src="../../images/users.svg" alt="" />
                     <span>Users</span>
                   </a>
@@ -62,33 +62,13 @@
       </header>
 
       <main class="wrapper">
-        <section class="add-book">
-          <button class="add-book__upload-image">
-            Upload files
-          </button>
-
-          <input type="text" placeholder="Name">
-
-          <textarea name="synopsis" id="" cols="30" rows="10" placeholder="Synopsis"></textarea>
-
-          <select name="author">
-            <option value="author1">Author 1</option>
-            <option value="author2">Author 2</option>
-            <option value="author3">Author 3</option>
-          </select>
+        <section class="users">
+          <div class="user"></div>
         </section>
       </main>
 
       <footer></footer>
     </body>
-
-    <script
-      src="https://upload-widget.cloudinary.com/global/all.js"
-      type="text/javascript"
-    ></script>
-
-    <script type="module" src="../../scripts/cloudinary.js"></script>
     <script type="module" src="../../main.js"></script>
-    <script type="module" src="./books.js"></script>
   </body>
 </html>

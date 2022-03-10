@@ -1,38 +1,96 @@
-import './reset.css'
-import './style.scss'
+import { getBooks, getAuthors, addBook } from './scripts/airtable'
+import './styles/reset.css'
+import './styles/style.scss'
+import './scripts/burger'
+import './scripts/navigation'
 
-const navToggle = document.querySelector(".nav__toggle");
-const navWrapper = document.querySelector(".nav__wrapper");
-const navItems = document.querySelectorAll(".nav__item");
+const books = document.querySelector('.books')
 
-navToggle.addEventListener("click", function () {
-  if (navWrapper.classList.contains("active")) {
-    this.setAttribute("aria-expanded", "false");
-    this.setAttribute("aria-label", "menu");
-    navWrapper.classList.remove("active");
-  } else {
-    navWrapper.classList.add("active");
-    this.setAttribute("aria-label", "close menu");
-    this.setAttribute("aria-expanded", "true");
-  }
-});
+//
+// create books list
+//
+const createBooksHtml = async () => {
+  if (!books) return
 
-let searchToggle = document.querySelector(".search__toggle");
-let searchForm = document.querySelector(".search__form");
+  const booksData = await getBooks()
+  const authorsData = await getAuthors()
 
-searchToggle.addEventListener("click", showSearch);
+  console.log(booksData)
+  console.log(authorsData)
 
-function showSearch() {
-  searchForm.classList.toggle("active");
+  books.innerHTML = booksData
+    .map(book => {
+      const author = authorsData.find(
+        author => author.id === book.fields.Author[0]
+      )
+
+      return `
+        <div
+          class="book"
+          data-author='${author.fields.Name}'
+          data-title='${book.fields.Name}'
+          data-description='${book.fields.Synopsis}'
+          data-image=${
+            book.fields['Cover Photo']
+              ? book.fields['Cover Photo'][0].thumbnails.large.url
+              : ''
+          }
+        >
+          <img src=${
+            book.fields['Cover Photo']
+              ? book.fields['Cover Photo'][0].thumbnails.large.url
+              : ''
+          } alt='${book.fields.Name}' />
+        </div>
+      `
+    })
+    .join()
 }
 
-navItems.forEach(item => {
-  item.addEventListener('click', function () {
-    navItems.forEach(item => {
-      item.classList.remove('active')
+//
+// handle book select
+//
+const handleBookSelect = () => {
+  const books = document.querySelectorAll('.book')
+  const cards = document.querySelectorAll('.card')
+
+  if (!books || !cards) return
+
+  books.forEach(book => {
+    book.addEventListener('click', () => {
+      cards[1].innerHTML = cards[0].innerHTML
+      const { image, title, description, author } = book.dataset
+
+      cards[0].innerHTML = `
+        <div class="card__image">
+          <img src=${image} alt="" />
+        </div>
+
+        <div class="card__empty"></div>
+
+        <div class="card__info">
+          <h3>${title}</h3>
+          <p class="card__desc">
+            ${description}
+          </p>
+          <p class="card__genre">${author}</p>
+          <button>Now Read!</button>
+        </div>
+      `
+
+      cards.forEach(card => card.classList.remove('card_green', 'card_pink'))
+      cards[0].classList.add('card_green')
+      cards[1].classList.add('card_pink')
     })
-    this.classList.add('active')
   })
-})
+}
 
+//
+// async start project
+//
+const startProject = async () => {
+  await createBooksHtml()
+  handleBookSelect()
+}
 
+startProject()

@@ -7,159 +7,157 @@
     <title>Books project</title>
   </head>
   <body>
-    <body>
-      <header class="site-header">
-        <div class="wrapper site-header__wrapper">
-          <div class="site-header__start">
-            <a href="#" class="brand">Brand</a>
-          </div>
+    <header class="site-header">
+      <div class="wrapper site-header__wrapper">
+        <div class="site-header__start">
+          <a href="#" class="brand">Brand</a>
+        </div>
 
-          <div class="search">
-            <button class="search__toggle" aria-label="Open search">
-              Search
+        <div class="search">
+          <button class="search__toggle" aria-label="Open search">
+            Search
+          </button>
+          <form class="search__form" action="">
+            <label class="sr-only" for="search">Search</label>
+            <input
+              type="search"
+              name=""
+              id="search"
+              placeholder="Search for the book"
+            />
+          </form>
+        </div>
+
+        <div class="site-header__end">
+          <nav class="nav">
+            <button class="nav__toggle" aria-expanded="false" type="button">
+              menu
             </button>
-            <form class="search__form" action="">
-              <label class="sr-only" for="search">Search</label>
-              <input
-                type="search"
-                name=""
-                id="search"
-                placeholder="Search for the book"
-              />
-            </form>
+            <ul class="nav__wrapper">
+              <li class="nav__item">
+                <a href="./pages/books/books.html">
+                  <img src="./images/books.svg" alt="" />
+                  <span>Books</span>
+                </a>
+              </li>
+
+              <li class="nav__item">
+                <a href="./pages/bookmarks/bookmarks.html">
+                  <img src="./images/bookmarks.svg" alt="" />
+                  <span>Bookmarks</span>
+                </a>
+              </li>
+
+              <li class="nav__item">
+                <a href="./pages/users/users.html">
+                  <img src="./images/users.svg" alt="" />
+                  <span>Users</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrapper">
+      <section class="recently">
+        <div class="recently__card card card_green">
+          <div class="card__image">
+            <img src="./images/book_1.jpg" alt="" />
           </div>
 
-          <div class="site-header__end">
-            <nav class="nav">
-              <button class="nav__toggle" aria-expanded="false" type="button">
-                menu
-              </button>
-              <ul class="nav__wrapper">
-                <li class="nav__item">
-                  <a href="/nested/books.html">
-                    <img src="./images/books.svg" alt="" />
-                    <span>Books</span>
-                  </a>
-                </li>
+          <div class="card__empty"></div>
 
-                <li class="nav__item">
-                  <a href="/nested/bookmarks.html">
-                    <img src="./images/bookmarks.svg" alt="" />
-                    <span>Bookmarks</span>
-                  </a>
-                </li>
-
-                <li class="nav__item">
-                  <a href="/nested/users.html">
-                    <img src="./images/users.svg" alt="" />
-                    <span>Users</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+          <div class="card__info">
+            <h3>Books Head</h3>
+            <p class="card__desc">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
+              elit lectus enim id euismod. Gravida at praesent aliquam, at
+              natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
+              dui vulputate magna.
+            </p>
+            <p class="card__genre">Detective, Love, History</p>
+            <button>Now Read!</button>
           </div>
         </div>
-      </header>
 
-      <main class="wrapper">
-        <section class="recently">
-          <div class="recently__card card card_green">
-            <div class="card__image">
-              <img src="./images/book_1.jpg" alt="" />
-            </div>
-
-            <div class="card__empty"></div>
-
-            <div class="card__info">
-              <h3>Books Head</h3>
-              <p class="card__desc">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
-                elit lectus enim id euismod. Gravida at praesent aliquam, at
-                natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
-                dui vulputate magna.
-              </p>
-              <p class="card__genre">Detective, Love, History</p>
-              <button>Now Read!</button>
-            </div>
+        <div class="recently__card card card_pink">
+          <div class="card__image">
+            <img src="./images/book_2.jpg" alt="" />
           </div>
 
-          <div class="recently__card card card_pink">
-            <div class="card__image">
-              <img src="./images/book_2.jpg" alt="" />
-            </div>
+          <div class="card__empty"></div>
 
-            <div class="card__empty"></div>
-
-            <div class="card__info">
-              <h3>Books Head</h3>
-              <p class="card__desc">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
-                elit lectus enim id euismod. Gravida at praesent aliquam, at
-                natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
-                dui vulputate magna.
-              </p>
-              <p class="card__genre">Detective, Science Fiction, Fantastic</p>
-              <button>Now Read!</button>
-            </div>
+          <div class="card__info">
+            <h3>Books Head</h3>
+            <p class="card__desc">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
+              elit lectus enim id euismod. Gravida at praesent aliquam, at
+              natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
+              dui vulputate magna.
+            </p>
+            <p class="card__genre">Detective, Science Fiction, Fantastic</p>
+            <button>Now Read!</button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section class="search">
-          <div class="filter">
-            <h4>Categories</h4>
-            <div class="filter__inputs">
-              <label>
-                <input type="checkbox" />
-                Novels
-              </label>
-              <label>
-                <input type="checkbox" />
-                Memory books
-              </label>
-              <label>
-                <input type="checkbox" />
-                Knowledge books
-              </label>
-              <label>
-                <input type="checkbox" />
-                Story books
-              </label>
-              <label>
-                <input type="checkbox" />
-                Religious books
-              </label>
-              <label>
-                <input type="checkbox" />
-                Travel books
-              </label>
-            </div>
+      <section class="search">
+        <div class="filter">
+          <h4>Categories</h4>
+          <div class="filter__inputs">
+            <label>
+              <input type="checkbox" />
+              Novels
+            </label>
+            <label>
+              <input type="checkbox" />
+              Memory books
+            </label>
+            <label>
+              <input type="checkbox" />
+              Knowledge books
+            </label>
+            <label>
+              <input type="checkbox" />
+              Story books
+            </label>
+            <label>
+              <input type="checkbox" />
+              Religious books
+            </label>
+            <label>
+              <input type="checkbox" />
+              Travel books
+            </label>
           </div>
-          <div class="books">
-            <div class="book">
-              <img src="./images/book_1.jpg" alt="" />
-            </div>
-
-            <div class="book">
-              <img src="./images/book_2.jpg" alt="" />
-            </div>
-
-            <div class="book">
-              <img src="./images/book_3.jpg" alt="" />
-            </div>
-
-            <div class="book">
-              <img src="./images/book_4.jpg" alt="" />
-            </div>
-
-            <div class="book">
-              <img src="./images/book_5.jpg" alt="" />
-            </div>
+        </div>
+        <div class="books">
+          <div class="book">
+            <img src="./images/book_1.jpg" alt="" />
           </div>
-        </section>
-      </main>
 
-      <footer></footer>
-    </body>
-    <script type="module" src="./main.js"></script>
+          <div class="book">
+            <img src="./images/book_2.jpg" alt="" />
+          </div>
+
+          <div class="book">
+            <img src="./images/book_3.jpg" alt="" />
+          </div>
+
+          <div class="book">
+            <img src="./images/book_4.jpg" alt="" />
+          </div>
+
+          <div class="book">
+            <img src="./images/book_5.jpg" alt="" />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer></footer>
   </body>
+  <script type="module" src="./main.js"></script>
 </html>

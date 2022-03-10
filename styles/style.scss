@@ -33,8 +33,15 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-family: 'Roboto', sans-serif;
   background-color: #242121;
+}
+
+main {
+  height: max-content;
 }
 
 .sr-only {
@@ -146,7 +153,9 @@ body {
   }
 
   a {
-    display: block;
+    display: grid;
+    place-items: center;
+    gap: .5rem;
     padding: 1rem;
     border-left: 4px solid transparent;
 
@@ -154,6 +163,11 @@ body {
       text-align: center;
       border-left: 0;
       border-bottom: 4px solid transparent;
+    }
+
+    img {
+      width: 2.5rem;
+      height: 2.5rem;
     }
 
     span {
@@ -172,6 +186,14 @@ body {
     @media (min-width: $small) {
       display: block;
       margin: 0 auto 0.5rem;
+    }
+  }
+
+  &:hover {
+    a {
+      @media (min-width: $small) {
+        border-bottom-color: #fff;
+      }
     }
   }
 
@@ -432,5 +454,6 @@ main {
 
 footer {
   height: 6rem;
+  margin-top: auto;
   background: #292828;
 }

@@ -2,9 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./images/book.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Books project</title>
+    <script type="module" src="./main.js"></script>
+    <script type="module" src="./scripts/imports.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -60,49 +62,7 @@
       </div>
     </header>
 
-    <main class="wrapper">
-      <section class="recently">
-        <div class="recently__card card card_green">
-          <div class="card__image">
-            <img src="./images/book_1.jpg" alt="" />
-          </div>
-
-          <div class="card__empty"></div>
-
-          <div class="card__info">
-            <h3>Books Head</h3>
-            <p class="card__desc">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
-              elit lectus enim id euismod. Gravida at praesent aliquam, at
-              natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
-              dui vulputate magna.
-            </p>
-            <p class="card__genre">Detective, Love, History</p>
-            <button>Now Read!</button>
-          </div>
-        </div>
-
-        <div class="recently__card card card_pink">
-          <div class="card__image">
-            <img src="./images/book_2.jpg" alt="" />
-          </div>
-
-          <div class="card__empty"></div>
-
-          <div class="card__info">
-            <h3>Books Head</h3>
-            <p class="card__desc">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Massa
-              elit lectus enim id euismod. Gravida at praesent aliquam, at
-              natoque at leo. Faucibus quam ipsum mi eget consectetur posuere
-              dui vulputate magna.
-            </p>
-            <p class="card__genre">Detective, Science Fiction, Fantastic</p>
-            <button>Now Read!</button>
-          </div>
-        </div>
-      </section>
-
+    <main class="wrapper main-page" style="opacity: 0">
       <section class="search">
         <div class="filter">
           <h4>Categories</h4>
@@ -133,31 +93,10 @@
             </label>
           </div>
         </div>
-        <div class="books">
-          <div class="book">
-            <img src="./images/book_1.jpg" alt="" />
-          </div>
-
-          <div class="book">
-            <img src="./images/book_2.jpg" alt="" />
-          </div>
-
-          <div class="book">
-            <img src="./images/book_3.jpg" alt="" />
-          </div>
-
-          <div class="book">
-            <img src="./images/book_4.jpg" alt="" />
-          </div>
-
-          <div class="book">
-            <img src="./images/book_5.jpg" alt="" />
-          </div>
-        </div>
+        <div class="books"></div>
       </section>
     </main>
 
     <footer></footer>
   </body>
-  <script type="module" src="./main.js"></script>
 </html>

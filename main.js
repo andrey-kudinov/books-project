@@ -1,16 +1,11 @@
-import { getBooks, getAuthors, addBook } from './scripts/airtable'
-import './styles/reset.css'
-import './styles/style.scss'
-import './scripts/burger'
-import './scripts/navigation'
-
-const books = document.querySelector('.books')
+import { getBooks, getAuthors } from './scripts/airtable'
 
 //
 // create books list
 //
 const createBooksHtml = async () => {
-  if (!books) return
+  const booksWrapper = document.querySelector('.main-page .books')
+  if (!booksWrapper) return
 
   const booksData = await getBooks()
   const authorsData = await getAuthors()
@@ -18,11 +13,9 @@ const createBooksHtml = async () => {
   console.log(booksData)
   console.log(authorsData)
 
-  books.innerHTML = booksData
+  booksWrapper.innerHTML = booksData
     .map(book => {
-      const author = authorsData.find(
-        author => author.id === book.fields.Author[0]
-      )
+      const author = authorsData.find(author => author.id === book.fields.Author[0])
 
       return `
         <div
@@ -30,67 +23,106 @@ const createBooksHtml = async () => {
           data-author='${author.fields.Name}'
           data-title='${book.fields.Name}'
           data-description='${book.fields.Synopsis}'
-          data-image=${
-            book.fields['Cover Photo']
-              ? book.fields['Cover Photo'][0].thumbnails.large.url
-              : ''
-          }
+          data-image=${book.fields['Cover Photo'] ? book.fields['Cover Photo'][0].thumbnails.large.url : ''}
         >
-          <img src=${
-            book.fields['Cover Photo']
-              ? book.fields['Cover Photo'][0].thumbnails.large.url
-              : ''
-          } alt='${book.fields.Name}' />
+          <img src=${book.fields['Cover Photo'] ? book.fields['Cover Photo'][0].thumbnails.large.url : ''} alt='${
+        book.fields.Name
+      }' />
         </div>
       `
     })
-    .join()
+    .join('')
 }
 
 //
 // handle book select
 //
 const handleBookSelect = () => {
-  const books = document.querySelectorAll('.book')
-  const cards = document.querySelectorAll('.card')
-
-  if (!books || !cards) return
+  const mainPage = document.querySelector('.main-page')
+  
+  if (!mainPage) return
+  
+  const books = document.querySelectorAll('.main-page .book')
 
   books.forEach(book => {
     book.addEventListener('click', () => {
-      cards[1].innerHTML = cards[0].innerHTML
+      if (!document.querySelector('.main-page .recently')) {
+        const cardsWrapper = document.createElement('section')
+        cardsWrapper.classList.add('recently')
+        mainPage.prepend(cardsWrapper)
+      }
+
       const { image, title, description, author } = book.dataset
+      let cards = document.querySelectorAll('.main-page .card')
+      
+      if (!cards.length) {
+        const card = document.createElement('div')
+        card.classList.add("recently__card", "card", "card_green")
+        card.innerHTML = `
+          <div class="card__image">
+            <img src=${image} alt="" />
+          </div>
 
-      cards[0].innerHTML = `
-        <div class="card__image">
-          <img src=${image} alt="" />
-        </div>
+          <div class="card__empty"></div>
 
-        <div class="card__empty"></div>
+          <div class="card__info">
+            <h3>${title}</h3>
+            <p class="card__desc">
+              ${description}
+            </p>
+            <p class="card__genre">${author}</p>
+            <button>Now Read!</button>
+          </div>
+        `
+        document.querySelector('.recently').append(card)
+      } else {
+        if (cards.length === 1) {
+          const card = cards[0].cloneNode(true)
+          cards[0].parentElement.append(card)
+        }
 
-        <div class="card__info">
-          <h3>${title}</h3>
-          <p class="card__desc">
-            ${description}
-          </p>
-          <p class="card__genre">${author}</p>
-          <button>Now Read!</button>
-        </div>
-      `
+        if (cards[0].dataset.title === title) return
 
-      cards.forEach(card => card.classList.remove('card_green', 'card_pink'))
-      cards[0].classList.add('card_green')
-      cards[1].classList.add('card_pink')
+        cards = document.querySelectorAll('.main-page .card')
+        cards[1].innerHTML = cards[0].innerHTML
+        cards[0].dataset.title = title
+        cards[0].innerHTML = `
+          <div class="card__image">
+            <img src=${image} alt=${title} />
+          </div>
+
+          <div class="card__empty"></div>
+
+          <div class="card__info">
+            <h3>${title}</h3>
+            <p class="card__desc">
+              ${description}
+            </p>
+            <p class="card__genre">${author}</p>
+            <button>Now Read!</button>
+          </div>
+        `
+        cards.forEach(card => card.classList.remove('card_green', 'card_pink'))
+        cards[0].classList.add('card_green')
+        cards[1].classList.add('card_pink')
+      }
     })
   })
 }
 
 //
-// async start project
+// async start main page
 //
-const startProject = async () => {
+const startMainPage = async () => {
+  if (!document.querySelector('.main-page')) return
   await createBooksHtml()
+  document.querySelector('.main-page').style.opacity = 1
+  document.querySelector('.main-page .search').style.display = 'flex'
   handleBookSelect()
 }
 
-startProject()
+
+window.addEventListener('DOMContentLoaded', () => {
+  startMainPage()
+});
+

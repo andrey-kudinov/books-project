@@ -2,93 +2,103 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="../../images/books.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Books project</title>
+    <script type="module" src="../../scripts/imports.js"></script>
+    <script type="module" src="./books.js"></script>
   </head>
   <body>
-    <body>
-      <header class="site-header">
-        <div class="wrapper site-header__wrapper">
-          <div class="site-header__start">
-            <a href="../../index.html" class="brand">Brand</a>
-          </div>
-
-          <div class="search">
-            <button class="search__toggle" aria-label="Open search">
-              Search
-            </button>
-            <form class="search__form" action="">
-              <label class="sr-only" for="search">Search</label>
-              <input
-                type="search"
-                name=""
-                id="search"
-                placeholder="Search for the book"
-              />
-            </form>
-          </div>
-
-          <div class="site-header__end">
-            <nav class="nav">
-              <button class="nav__toggle" aria-expanded="false" type="button">
-                menu
-              </button>
-              <ul class="nav__wrapper">
-                <li class="nav__item active">
-                  <a href="#">
-                    <img src="../../images/books.svg" alt="" />
-                    <span>Books</span>
-                  </a>
-                </li>
-
-                <li class="nav__item">
-                  <a href="/pages/bookmarks/bookmarks.html">
-                    <img src="../../images/bookmarks.svg" alt="" />
-                    <span>Bookmarks</span>
-                  </a>
-                </li>
-
-                <li class="nav__item">
-                  <a href="/pages/users/users.html">
-                    <img src="../../images/users.svg" alt="" />
-                    <span>Users</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+    <header class="site-header">
+      <div class="wrapper site-header__wrapper">
+        <div class="site-header__start">
+          <a href="../../index.html" class="brand">Brand</a>
         </div>
-      </header>
 
-      <main class="wrapper">
-        <section class="add-book">
-          <button class="add-book__upload-image">
-            Upload files
-          </button>
+        <div class="search">
+          <button class="search__toggle" aria-label="Open search">Search</button>
+          <form class="search__form" action="">
+            <label class="sr-only" for="search">Search</label>
+            <input type="search" name="" id="search" placeholder="Search for the book" />
+          </form>
+        </div>
 
-          <input type="text" placeholder="Name">
+        <div class="site-header__end">
+          <nav class="nav">
+            <button class="nav__toggle" aria-expanded="false" type="button">menu</button>
+            <ul class="nav__wrapper">
+              <li class="nav__item active">
+                <a href="#">
+                  <img src="../../images/books.svg" alt="" />
+                  <span>Books</span>
+                </a>
+              </li>
 
-          <textarea name="synopsis" id="" cols="30" rows="10" placeholder="Synopsis"></textarea>
+              <li class="nav__item">
+                <a href="/pages/bookmarks/bookmarks.html">
+                  <img src="../../images/bookmarks.svg" alt="" />
+                  <span>Bookmarks</span>
+                </a>
+              </li>
 
-          <select name="author">
-            <option value="author1">Author 1</option>
-            <option value="author2">Author 2</option>
-            <option value="author3">Author 3</option>
-          </select>
-        </section>
-      </main>
+              <li class="nav__item">
+                <a href="/pages/users/users.html">
+                  <img src="../../images/users.svg" alt="" />
+                  <span>Users</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
 
-      <footer></footer>
-    </body>
+    <main class="wrapper books-page" style="opacity: 1">
+      <section class="add-book">
+        <button class="books-page__button add-book__upload-image">Add cover</button>
 
-    <script
-      src="https://upload-widget.cloudinary.com/global/all.js"
-      type="text/javascript"
-    ></script>
+        <input type="text" placeholder="Title" class="add-book__title" />
 
-    <script type="module" src="../../scripts/cloudinary.js"></script>
-    <script type="module" src="../../main.js"></script>
-    <script type="module" src="./books.js"></script>
+        <textarea
+          name="synopsis"
+          id=""
+          cols="30"
+          rows="10"
+          placeholder="Synopsis"
+          class="add-book__synopsis"
+        ></textarea>
+
+        <select name="author" class="add-book__author">
+          <option value="author1">Author 1</option>
+          <option value="author2">AuthorAuthorAuthor 2</option>
+          <option value="author3">Author 3</option>
+        </select>
+
+        <button class="books-page__button">Add book</button>
+      </section>
+
+      <section class="books">
+        <div class="book">
+          <div class="book__img">
+            <img src="../../images/book_4.jpg" alt="" />
+          </div>
+
+          <span class="book__title">Sense and Sensibility</span>
+
+          <div class="book__synopsis">
+            <p>
+              Sense and Sensibility is a novel by Jane Austen, published in 1811. It was published anonymously; By A Lady
+              appears on the title page where the author
+            </p>
+          </div>
+
+          <span class="book__author">Jane Austen</span>
+
+          <button class="books-page__button">Remove book</button>
+        </div>
+      </section>
+    </main>
+
+    <footer></footer>
   </body>
 </html>

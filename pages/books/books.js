@@ -20,6 +20,8 @@ const handleAddBook = async (authorsData) => {
     const authorName = select.options[select.selectedIndex].text
     const url = document.querySelector('.add-book__upload-image').dataset.url
 
+    if (!url || !title || !synopsis || !authorId) return
+
     const newBook = await addBook({ url, title, synopsis, authorId })
 
     const books = document.querySelector('.books-page .books')

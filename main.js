@@ -3,11 +3,12 @@ import { getBooks, getAuthors } from './scripts/airtable'
 //
 // create books list
 //
-const createBooksHtml = async () => {
+const createBooksElements = async () => {
   const booksWrapper = document.querySelector('.main-page .books')
   if (!booksWrapper) return
 
   const booksData = await getBooks()
+  booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
   const authorsData = await getAuthors()
 
   console.log(booksData)
@@ -115,7 +116,7 @@ const handleBookSelect = () => {
 //
 const startMainPage = async () => {
   if (!document.querySelector('.main-page')) return
-  await createBooksHtml()
+  await createBooksElements()
   document.querySelector('.main-page').style.opacity = 1
   document.querySelector('.main-page .search').style.display = 'flex'
   handleBookSelect()

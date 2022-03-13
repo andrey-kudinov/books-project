@@ -1,4 +1,5 @@
 export const handleUploadImage = (selector) => {
+  const button = document.querySelector(selector)
   const myWidget = cloudinary.createUploadWidget(
     {
       cloudName: import.meta.env.VITE_CLOUD_NAME,
@@ -7,11 +8,13 @@ export const handleUploadImage = (selector) => {
     (error, result) => {
       if (!error && result && result.event === 'success') {
         console.log('Done! Here is the image info: ', result.info)
+        button.dataset.url = result.info.url
+        button.textContent = '✔'
+        button.disabled = true
       }
     }
   )
 
-  const button = document.querySelector(selector)
   button.addEventListener(
     'click',
     () => {

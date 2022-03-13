@@ -15,6 +15,7 @@ const createBooksElements = async () => {
   console.log(authorsData)
 
   booksWrapper.innerHTML = booksData
+    .filter(book => book.fields.Shown)
     .map(book => {
       const author = authorsData.find(author => author.id === book.fields.Author[0])
 

@@ -1,4 +1,4 @@
-import { getBooks, getAuthors, addBook } from '../../scripts/airtable'
+import { getBooks, getAuthors, addBook, updateBook } from '../../scripts/airtable'
 import { handleUploadImage } from '../../scripts/cloudinary'
 
 import './books.scss'
@@ -6,11 +6,11 @@ import './books.scss'
 //
 // Add new book
 //
-const handleAddBook = authorsData => {
+const handleAddBook = async (authorsData) => {
   const button = document.querySelector('.add-book__add')
   if (!button) return
 
-  button.addEventListener('click', () => {
+  button.addEventListener('click', async () => {
     const input = document.querySelector('.add-book__title')
     const title = input.value
     const textarea = document.querySelector('.add-book__synopsis')
@@ -20,7 +20,7 @@ const handleAddBook = authorsData => {
     const authorName = select.options[select.selectedIndex].text
     const url = document.querySelector('.add-book__upload-image').dataset.url
 
-    addBook({ url, title, synopsis, authorId })
+    const newBook = await addBook({ url, title, synopsis, authorId })
 
     const books = document.querySelector('.books-page .books')
     const book = document.createElement('div')
@@ -30,7 +30,7 @@ const handleAddBook = authorsData => {
       <span class="book__title">${title}</span>
       <div class="book__synopsis"><p>${synopsis}</p></div>
       <span class="book__author">${authorName}</span>
-      <button class="books-page__button book__remove">Remove book</button>
+      <button class="books-page__button book__remove" data-id="${newBook.records[0].id}">Remove book</button>
     `
     books.prepend(book)
 
@@ -62,6 +62,7 @@ const createBooksElements = (authorsData, booksData) => {
   console.log(authorsData)
 
   books.innerHTML = booksData
+    .filter(book => book.fields.Shown)
     .map(book => {
       const author = authorsData.find(author => author.id === book.fields.Author[0])
 
@@ -76,7 +77,7 @@ const createBooksElements = (authorsData, booksData) => {
           <span class="book__title">${book.fields.Name}</span>
           <div class="book__synopsis"><p>${book.fields.Synopsis}</p></div>
           <span class="book__author">${author.fields.Name}</span>
-          <button class="books-page__button book__remove">Remove book</button>
+          <button class="books-page__button book__remove" data-id="${book.id}">Remove book</button>
         </div>
       `
     })
@@ -90,12 +91,12 @@ const removeBook = () => {
   const buttons = document.querySelectorAll('.book__remove')
   buttons.forEach(button => {
     button.addEventListener('click', () => {
-      console.log('%c', 'font: 2rem/1 Arial; color: pink;', button.closest('.book').children)
       const parent = button.closest('.book')
       Array.from(parent.children).forEach(child => (child.style.transform = 'scale(0)'))
       setTimeout(() => {
         button.closest('.book').remove()
       }, 300)
+      updateBook({bookId: button.dataset.id, shown: false})
     })
   })
 }
@@ -123,7 +124,7 @@ const startBooksPage = async () => {
   createBooksElements(authorsData, booksData)
   handleUploadImage('.add-book__upload-image')
   document.querySelector('.books-page').style.opacity = 1
-  handleAddBook(authorsData)
+  await handleAddBook(authorsData)
   removeBook()
 }
 

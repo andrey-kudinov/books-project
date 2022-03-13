@@ -156,6 +156,7 @@
 
     & > * {
       width: 100%;
+      transition: .3s;
     }
 
     &__img {
@@ -184,6 +185,7 @@
     }
 
     &__synopsis {
+      min-height: 4rem;
       height: fit-content;
       border-radius: 1rem;
 

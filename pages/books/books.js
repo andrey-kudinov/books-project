@@ -1,5 +1,5 @@
-import { getBooks, getAuthors, addBook, updateBook } from '../../scripts/airtable'
-import { handleUploadImage } from '../../scripts/cloudinary'
+import { getData, addItem, updateItem } from '../../scripts/airtable'
+import { handleUploadImage, addUploadWidgetScript } from '../../scripts/cloudinary'
 
 import './books.scss'
 
@@ -18,20 +18,28 @@ const handleAddBook = async (authorsData) => {
     const select = document.querySelector('.add-book__author')
     const authorId = select.value
     const authorName = select.options[select.selectedIndex].text
-    const url = document.querySelector('.add-book__upload-image').dataset.url
+    const coverUrl = document.querySelector('.add-book__upload-image').dataset.url
 
-    if (!url || !title || !synopsis || !authorId) return
+    if (!coverUrl || !title || !synopsis || !authorId) return
 
-    const newBook = await addBook({ url, title, synopsis, authorId })
+    const fields = {
+      'Cover Photo': [{ url: coverUrl }],
+      Author: [authorId],
+      Synopsis: synopsis,
+      Name: title,
+      Shown: true
+    }
+
+    const newBook = await addItem('Books', fields)
 
     const books = document.querySelector('.books-page .books')
     const book = document.createElement('div')
     book.classList.add('book')
     book.innerHTML = `
-      <div class="book__img"><img src=${url} alt='${title}'/></div>
-      <span class="book__title">${title}</span>
-      <div class="book__synopsis"><p>${synopsis}</p></div>
-      <span class="book__author">${authorName}</span>
+      <div class="book__img"><img src=${coverUrl} alt='${title}'/></div>
+      <span class="book__title clm2">${title}</span>
+      <div class="book__synopsis clm3"><p>${synopsis}</p></div>
+      <span class="book__author clm4">${authorName}</span>
       <button class="books-page__button book__remove" data-id="${newBook.records[0].id}">Remove book</button>
     `
     books.prepend(book)
@@ -76,9 +84,9 @@ const createBooksElements = (authorsData, booksData) => {
               alt='${book.fields.Name}' 
             />
           </div>
-          <span class="book__title">${book.fields.Name}</span>
-          <div class="book__synopsis"><p>${book.fields.Synopsis}</p></div>
-          <span class="book__author">${author.fields.Name}</span>
+          <span class="book__title clm2">${book.fields.Name}</span>
+          <div class="book__synopsis clm3"><p>${book.fields.Synopsis}</p></div>
+          <span class="book__author clm4">${author.fields.Name}</span>
           <button class="books-page__button book__remove" data-id="${book.id}">Remove book</button>
         </div>
       `
@@ -98,19 +106,9 @@ const removeBook = () => {
       setTimeout(() => {
         button.closest('.book').remove()
       }, 300)
-      updateBook({bookId: button.dataset.id, shown: false})
+      updateItem('Books', {itemId: button.dataset.id, shown: false})
     })
   })
-}
-
-//
-// add upload-widget script (for Vite issue)
-//
-const addUploadWidgetScript = () => {
-  const script = document.createElement('script')
-  script.setAttribute('src', 'https://upload-widget.cloudinary.com/global/all.js')
-  script.setAttribute('type', 'text/javascript')
-  document.head.prepend(script)
 }
 
 //
@@ -119,9 +117,9 @@ const addUploadWidgetScript = () => {
 const startBooksPage = async () => {
   if (!document.querySelector('.books-page')) return
   addUploadWidgetScript()
-  const booksData = await getBooks()
+  const booksData = await getData('Books')
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
-  const authorsData = await getAuthors()
+  const authorsData = await getData('Authors')
   addSelectElement(authorsData)
   createBooksElements(authorsData, booksData)
   handleUploadImage('.add-book__upload-image')

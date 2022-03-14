@@ -23,3 +23,13 @@ export const handleUploadImage = (selector) => {
     false
     )
 }
+
+//
+// add upload-widget script (for Vite issue)
+//
+export const addUploadWidgetScript = () => {
+  const script = document.createElement('script')
+  script.setAttribute('src', 'https://upload-widget.cloudinary.com/global/all.js')
+  script.setAttribute('type', 'text/javascript')
+  document.head.prepend(script)
+}

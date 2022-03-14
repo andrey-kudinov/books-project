@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Users</title>
     <script type="module" src="../../scripts/imports.js"></script>
+    <script type="module" src="./users.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -59,9 +60,41 @@
       </div>
     </header>
 
-    <main class="wrapper">
+    <main class="wrapper users-page">
+      <section class="add-user">
+        <button class="users-page__button add-user__upload-image">Add avatar</button>
+
+        <input type="text" placeholder="Name" class="add-user__name" />
+
+        <textarea name="about" id="" cols="30" rows="10" placeholder="About" class="add-user__about"></textarea>
+
+        <select name="role" class="add-user__role">
+          <option value="regular">Regular User</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <button class="users-page__button add-user__add">Add user</button>
+      </section>
+
       <section class="users">
-        <div class="user"></div>
+        <div class="user">
+          <div class="user__img">
+            <img src="../../images/book_4.jpg" alt="" />
+          </div>
+
+          <span class="user__title clm2">Andrey Kudinov</span>
+
+          <div class="user__synopsis clm3">
+            <p>
+              Sense and Sensibility is a novel by Jane Austen, published in 1811. It was published anonymously; By A
+              Lady appears on the title page where the author
+            </p>
+          </div>
+
+          <span class="user__author clm4">admin</span>
+
+          <button class="users-page__button user__remove">Remove user</button>
+        </div>
       </section>
     </main>
 

@@ -1,4 +1,4 @@
-import { getBooks, getAuthors } from './scripts/airtable'
+import { getData } from './scripts/airtable'
 
 //
 // create books list
@@ -7,9 +7,9 @@ const createBooksElements = async () => {
   const booksWrapper = document.querySelector('.main-page .books')
   if (!booksWrapper) return
 
-  const booksData = await getBooks()
+  const booksData = await getData('Books')
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
-  const authorsData = await getAuthors()
+  const authorsData = await getData('Authors')
 
   console.log(booksData)
   console.log(authorsData)

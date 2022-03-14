@@ -1,0 +1,211 @@
+.books-page,
+.users-page {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 4rem minmax(8rem, 1fr) 2fr minmax(8rem, 1fr) 4rem;
+  place-items: center;
+  gap: 2rem;
+  transition: .3s;
+
+  @mixin shadow-effect {
+    &:hover {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 7px rgba(255, 255, 255, .45);
+    }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      clip: rect(0px, 4rem, 0, 0);
+      width: 100%;
+      height: 100%;
+      content: '';
+      transition: .3s;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px #fff inset;
+    }
+
+    &:hover:after {
+      clip: rect(0px, 4rem, 4rem, 0);
+    }
+
+    &:active:before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      content: '';
+      transform: scale(0);
+      animation: boom 500ms ease-out;;
+      border-radius: 50%;
+      background-color: rgba(#fff, .4);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #fff, 0 0 0 7px rgba(255, 255, 255, .45);
+    }
+
+    @keyframes boom {
+      from {
+        transform: scale(0);
+        opacity: .5;
+      }
+
+ to {
+        transform: scale(3);
+        opacity: 0;
+      }
+    }
+  }
+
+  &__button {
+    width: 4rem;
+    height: 4rem;
+    cursor: pointer;
+    transition: .3s;
+    color: gray;
+    border: 3px solid #373737;
+    border-radius: 50%;
+    background: transparent;
+
+    @include shadow-effect;
+
+    &:hover {
+      transform: rotate(10deg);
+      color: #fff;
+    }
+  }
+
+  .add-book,
+  .add-user {
+    display: contents;
+
+    & > * {
+      width: 100%;
+    }
+  }
+
+  @mixin field {
+    height: 4rem;
+    padding: 1.25rem;
+    transition: .3s;
+    color: #fff;
+    border: 3px solid #373737;
+    border-radius: 4rem;
+    background: transparent;
+  }
+
+  @mixin input {
+    flex-shrink: 0;
+    padding: .5rem 1.25rem;
+
+    @include shadow-effect;
+
+    &::placeholder {
+      color: gray;
+    }
+
+    &:hover::placeholder{
+      color: #fff;
+    }
+  }
+
+  .add-book,
+  .add-user {
+    input[type="text"],
+    textarea,
+    select {
+      @include field;
+    }
+
+    input[type="text"] {
+      @include input
+    }
+
+    textarea {
+      resize: vertical;
+      transition: box-shadow .3s;
+
+      @include shadow-effect;
+
+      &::placeholder {
+        color: gray;
+      }
+
+      &:hover::placeholder{
+        color: #fff;
+      }
+    }
+
+    select {
+      text-indent: 1px;
+      color: gray;
+
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      @include shadow-effect;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .books,
+  .users {
+    display: contents;
+  }
+
+  .book,
+  .user {
+    display: contents;
+
+    & > * {
+      width: 100%;
+      transition: .3s;
+    }
+
+    img {
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 4rem;
+      transition: .3s;
+      border: 3px solid #373737;
+      border-radius: 1rem;
+
+      &:hover {
+        transform: scale(1.3);
+      }
+    }
+
+    .clm2,
+    .clm3,
+    .clm4 {
+      display: grid;
+      align-items: center;
+      height: 4rem;
+      padding: .5rem 1.25rem;
+      color: #fff;
+      border: 3px solid #373737;
+      border-radius: 4rem;
+    }
+
+    .clm3 {
+      min-height: 4rem;
+      height: fit-content;
+      border-radius: 1rem;
+
+      p {
+        display: -webkit-box !important;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        white-space: normal;
+
+        -webkit-line-clamp: 5;
+      }
+    }
+  }
+}

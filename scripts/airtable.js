@@ -1,6 +1,8 @@
-export const getBooks = async () => {
+const base = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}`
+
+export const getData = async (table) => {
   const response = await fetch(
-    `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}/Books?api_key=${
+    `${base}/${table}?api_key=${
       import.meta.env.VITE_AIRTABLE_KEY
     }`
   )
@@ -8,9 +10,9 @@ export const getBooks = async () => {
   return (await response.json()).records
 }
 
-export const getBook = async bookId => {
+export const getItem = async (table, bookId) => {
   const response = await fetch(
-    `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}/Books/${bookId}?api_key=${
+    `${base}/${table}/${bookId}?api_key=${
       import.meta.env.VITE_AIRTABLE_KEY
     }`
   )
@@ -18,27 +20,9 @@ export const getBook = async bookId => {
   return await response.json()
 }
 
-export const getAuthors = async () => {
-  const response = await fetch(
-    `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}/Authors?api_key=${
-      import.meta.env.VITE_AIRTABLE_KEY
-    }`
-  )
-
-  return (await response.json()).records
-}
-
-export const addBook = async ({ url, title, synopsis, authorId }) => {
-  const fields = {
-    'Cover Photo': [{ url }],
-    Author: [authorId],
-    Synopsis: synopsis,
-    Name: title,
-    Shown: true
-  }
-
+export const addItem = async (table, fields) => {
   const airtableResult = await fetch(
-    `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}/Books?api_key=${
+    `${base}/${table}?api_key=${
       import.meta.env.VITE_AIRTABLE_KEY
     }`,
     {
@@ -51,20 +35,24 @@ export const addBook = async ({ url, title, synopsis, authorId }) => {
   )
 
   const response = await airtableResult.json()
-  console.log('addBook -', response)
+  console.log('addItem -', response)
   return response
 }
 
-export const updateBook = async ({ bookId, url, title, synopsis, authorId, shown }) => {
+export const updateItem = async (table , { itemId, coverUrl, title, synopsis, authorId, shown, name, role, about, avaUrl }) => {
   const fields = {}
   if (title) fields.Title = title
-  if (url) fields['Cover Photo'] = [{ url }]
+  if (coverUrl) fields['Cover Photo'] = [{ url: coverUrl }]
   if (synopsis) fields.Synopsis = synopsis
   if (authorId) fields.Author = authorId
+  if (name) fields.Name = name
+  if (avaUrl) fields.Avatar = [{ url: avaUrl }]
+  if (role) fields.Role = role
+  if (about) fields.About = about
   if (shown !== undefined) fields.Shown = shown
 
   const airtableResult = await fetch(
-    `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}/Books/${bookId}?api_key=${
+    `${base}/${table}/${itemId}?api_key=${
       import.meta.env.VITE_AIRTABLE_KEY
     }`,
     {
@@ -76,5 +64,5 @@ export const updateBook = async ({ bookId, url, title, synopsis, authorId, shown
     }
   )
 
-  console.log('updateBook -', await airtableResult.json())
+  console.log('updateItem -', await airtableResult.json())
 }

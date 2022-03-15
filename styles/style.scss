@@ -283,12 +283,14 @@ main {
       width: 2rem; 
       aspect-ratio: 1;
       clip-path: polygon(-41% 0,50% 91%, 141% 0);
-      border-image: radial-gradient(#292828 69%,#0000 70%) 84.5% fill/100%;
+      border-image: radial-gradient(#fff 69%,#0000 70%) 84.5% fill/100%;
+      opacity: .2;
       cursor: pointer;
     }
     
     input:checked ~ .heart {
-      border-image: radial-gradient(red 69%,#0000 70%) 84.5% fill/100%;
+      border-image: radial-gradient(#fff 69%,#0000 70%) 84.5% fill/100%;
+      opacity: .8;
     }
   }
 

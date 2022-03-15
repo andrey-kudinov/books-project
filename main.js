@@ -41,9 +41,9 @@ const createBooksElements = async () => {
 //
 const handleBookSelect = () => {
   const mainPage = document.querySelector('.main-page')
-  
+
   if (!mainPage) return
-  
+
   const books = document.querySelectorAll('.main-page .book')
 
   books.forEach(book => {
@@ -56,10 +56,10 @@ const handleBookSelect = () => {
 
       const { image, title, description, author } = book.dataset
       let cards = document.querySelectorAll('.main-page .card')
-      
+
       if (!cards.length) {
         const card = document.createElement('div')
-        card.classList.add("recently__card", "card", "card_green")
+        card.classList.add('recently__card', 'card', 'card_green')
         card.innerHTML = `
           <div class="card__image">
             <img src=${image} alt="" />
@@ -74,6 +74,10 @@ const handleBookSelect = () => {
             </p>
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
+            <label>
+              <input type="checkbox" class="sr-only">
+              <div class="heart"></div>
+            </label>
           </div>
         `
         document.querySelector('.recently').append(card)
@@ -102,6 +106,10 @@ const handleBookSelect = () => {
             </p>
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
+            <label>
+              <input type="checkbox" class="sr-only">
+              <div class="heart"></div>
+            </label>
           </div>
         `
         cards.forEach(card => card.classList.remove('card_green', 'card_pink'))
@@ -113,6 +121,72 @@ const handleBookSelect = () => {
 }
 
 //
+// open modal
+//
+const modalOpen = () => {
+  const button = document.querySelector('.nav__auth')
+  if (!button) return
+
+  const overlay = document.querySelector('.overlay')
+  const modal = document.querySelector('.modal')
+  const input = document.querySelector('.modal input')
+
+  button.addEventListener('click', () => {
+    overlay.style.display = 'grid'
+    modal.style.display = 'flex'
+    input.focus()
+  })
+}
+
+//
+// close modal
+//
+const modalClose = () => {
+  const button = document.querySelector('.modal .close')
+  if (!button) return
+
+  const overlay = document.querySelector('.overlay')
+  const modal = document.querySelector('.modal')
+
+  const close = e => {
+    overlay.style.display = 'none'
+    modal.style.display = 'none'
+  }
+
+  button.addEventListener('click', close)
+  document.addEventListener('keydown', event =>
+    event.key === 'Escape' && modal.style.display === 'flex' ? close() : null
+  )
+}
+
+//
+// handle auth
+//
+const handleAuth = () => {
+  const button = document.querySelector('.login')
+  const modal = document.querySelector('.modal')
+  const input = document.querySelector('.modal input')
+  if (!button || !input) return
+
+  const auth = async () => {
+    const login = input.value
+    if (!login) return
+  
+    const users = await getData('Users')
+
+    if (users.some(user => user.fields.Login === btoa(encodeURIComponent(login)))) {
+      console.log(`Hello, ${users.find(user => user.fields.Login === btoa(encodeURIComponent(login))).fields.Name}!`)
+      input.value = ''
+      modalClose()
+    } else {
+      console.log('Hello, stranger!')
+    }
+  }
+
+  button.addEventListener('click', auth)
+}
+
+//
 // async start main page
 //
 const startMainPage = async () => {
@@ -121,10 +195,11 @@ const startMainPage = async () => {
   document.querySelector('.main-page').style.opacity = 1
   document.querySelector('.main-page .search').style.display = 'flex'
   handleBookSelect()
+  modalOpen()
+  modalClose()
+  handleAuth()
 }
-
 
 window.addEventListener('DOMContentLoaded', () => {
   startMainPage()
-});
-
+})

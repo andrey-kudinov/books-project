@@ -40,7 +40,7 @@ const handleAddBook = async (authorsData) => {
       <span class="book__title clm2">${title}</span>
       <div class="book__synopsis clm3"><p>${synopsis}</p></div>
       <span class="book__author clm4">${authorName}</span>
-      <button class="books-page__button book__remove" data-id="${newBook.records[0].id}">Remove book</button>
+      <button class="books-page__button book__remove btn" data-id="${newBook.records[0].id}">Remove book</button>
     `
     books.prepend(book)
 
@@ -87,7 +87,7 @@ const createBooksElements = (authorsData, booksData) => {
           <span class="book__title clm2">${book.fields.Name}</span>
           <div class="book__synopsis clm3"><p>${book.fields.Synopsis}</p></div>
           <span class="book__author clm4">${author.fields.Name}</span>
-          <button class="books-page__button book__remove" data-id="${book.id}">Remove book</button>
+          <button class="books-page__button book__remove btn" data-id="${book.id}">Remove book</button>
         </div>
       `
     })

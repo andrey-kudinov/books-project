@@ -68,7 +68,6 @@ const handleBookSelect = () => {
               <input
                 type="checkbox"
                 class="sr-only"
-                ${sessionStorage.userBookmarks.includes(bookId) ? 'checked' : null}
                 data-book-id='${bookId}'
               >
               <div class="heart"></div>
@@ -101,7 +100,6 @@ const handleBookSelect = () => {
               <input
                 type="checkbox"
                 class="sr-only"
-                ${sessionStorage.userBookmarks.includes(bookId) ? 'checked' : null}
                 data-book-id='${bookId}'
               >
               <div class="heart"></div>
@@ -115,7 +113,7 @@ const handleBookSelect = () => {
 
       const inputs = document.querySelectorAll('.card input')
       inputs.forEach(input => {
-        input.checked = sessionStorage.userBookmarks.includes(input.dataset.bookId)
+        input.checked = sessionStorage.userBookmarks?.includes(input.dataset.bookId)
       })
       handleLike()
     })
@@ -204,21 +202,29 @@ const handleLike = () => {
   const inputs = document.querySelectorAll('.card input')
   const userId = sessionStorage.userId
 
-  if (!inputs || !userId) return
+  if (!inputs) return
 
   inputs.forEach(input => {
     input.addEventListener('change', async () => {
-      const users = await getData('Users')
-      const user = users.find(user => user.id === userId)
+      let users
+      let user
+      if (userId) {
+        users = await getData('Users')
+        user = users.find(user => user.id === userId)
+      }
       const bookId = input.dataset.bookId
 
       if (input.checked) {
-        const bookmarks = [...user.fields.Bookmarks, bookId]
-        updateItem('Users', { itemId: userId, bookmarks })
+        const bookmarks = sessionStorage.userBookmarks ? [...sessionStorage.userBookmarks.split(','), bookId] : [bookId]
+        if (userId) {
+          updateItem('Users', { itemId: userId, bookmarks })
+        }
         sessionStorage.setItem('userBookmarks', bookmarks)
       } else {
-        const bookmarks = user.fields.Bookmarks.filter(bId => bId !== bookId)
-        updateItem('Users', { itemId: userId, bookmarks })
+        const bookmarks = sessionStorage.userBookmarks.split(',').filter(bId => bId !== bookId)
+        if (userId) {
+          updateItem('Users', { itemId: userId, bookmarks })
+        }
         sessionStorage.setItem('userBookmarks', bookmarks)
       }
     })

@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+@import './ui.scss';
+@import './pages.scss';
 
 $small: 800px;
 
@@ -34,6 +36,7 @@ html {
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -122,6 +125,7 @@ main {
   justify-content: space-between;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  height: 6rem;
 
   @media (min-width: $small) {
     padding-top: 0;
@@ -137,7 +141,7 @@ main {
   @media (max-width: $small - 1) {
     position: absolute;
     z-index: -1;
-    top: calc(100% + 35px);
+    top: 100%;
     right: 0;
     left: 0;
     visibility: hidden;
@@ -150,6 +154,7 @@ main {
       visibility: visible;
       transform: translateY(0);
       opacity: 1;
+      z-index: 1
     }
   }
 }
@@ -230,72 +235,6 @@ main {
   transition: .5s;
 }
 
-.search {
-  display: none;
-  margin-left: 1rem;
-}
-
-.search__toggle {
-  order: 1;
-  width: 34px;
-  height: 34px;
-  color: #fff;
-  border: 0;
-  background: url('/img/search.svg') center right/22px no-repeat;
-  font-size: 0;
-  appearance: none;
-
-
-  @media (min-width: $small) {
-    padding-left: 10px;
-  }
-
-  @media (max-width: $small - 1) {
-    position: absolute;
-    top: .65rem;
-    right: 5.5rem;
-    background: url('/img/search.svg') center/22px no-repeat;
-  }
-}
-
-.search__form {
-  display: block;
-
-  &.active {
-    display: block;
-  }
-
-  @media (max-width: $small - 1) {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-
-    input {
-      width: 100%;
-    }
-  }
-
-  input {
-    min-width: 400px;
-    height: 33px;
-    padding: .5rem;
-    border: 0;
-    border-radius: 0;
-    background-color: #373737;
-    font-size: 16px;
-    appearance: none;
-
-    @media (max-width: $small - 1) {
-      border-bottom: 1px solid #979797;
-    }
-  }
-}
-
-.inactive-item {
-  opacity: 0;
-}
-
 main {
   margin: 2rem 0;
 }
@@ -332,6 +271,25 @@ main {
     gap: 1rem;
     flex-direction: column;
     padding: 2rem 1rem;
+  }
+
+  label {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+
+    .heart {
+      display:inline-block;
+      width: 2rem; 
+      aspect-ratio: 1;
+      clip-path: polygon(-41% 0,50% 91%, 141% 0);
+      border-image: radial-gradient(#292828 69%,#0000 70%) 84.5% fill/100%;
+      cursor: pointer;
+    }
+    
+    input:checked ~ .heart {
+      border-image: radial-gradient(red 69%,#0000 70%) 84.5% fill/100%;
+    }
   }
 
   h3,
@@ -470,4 +428,36 @@ footer {
   height: 6rem;
   margin-top: auto;
   background: #292828;
+}
+
+.overlay {
+  position: fixed;
+  display: none;
+  place-items: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.modal {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  padding: 2rem;
+  width: 20rem;
+  background: #242121;
+  z-index: 2;
+  border-radius: 4rem;
+
+  input {
+    @include field;
+    @include input;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 2rem;
+  }
 }

@@ -15,17 +15,9 @@
           <a href="#" class="brand">Books project</a>
         </div>
 
-        <div class="search">
-          <button class="search__toggle" aria-label="Open search">Search</button>
-          <form class="search__form" action="">
-            <label class="sr-only" for="search">Search</label>
-            <input type="search" name="" id="search" placeholder="Search for the book" />
-          </form>
-        </div>
-
         <div class="site-header__end">
           <nav class="nav">
-            <button class="nav__toggle" aria-expanded="false" type="button">menu</button>
+            <button class="nav__toggle btn" aria-expanded="false" type="button">menu</button>
             <ul class="nav__wrapper">
               <li class="nav__item active">
                 <a href="#">
@@ -52,6 +44,13 @@
                 <a href="./pages/users/users.html">
                   <img src="./images/users.svg" alt="" />
                   <span>Users</span>
+                </a>
+              </li>
+
+              <li class="nav__item nav__auth">
+                <a href="#">
+                  <img src="./images/key.svg" alt="" />
+                  <span>Auth</span>
                 </a>
               </li>
             </ul>
@@ -93,6 +92,16 @@
         </div>
         <div class="books"></div>
       </section>
+      <div class="overlay">
+        <div class="modal">
+          <input type="text" placeholder="Login">
+          <div class="modal__buttons">
+            <button class="btn close">Close</button>
+            <button class="btn login">Sing in</button>
+          </div>
+        </div>
+      </div>
+
     </main>
 
     <footer></footer>

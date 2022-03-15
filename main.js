@@ -3,12 +3,9 @@ import { getData, updateItem } from './scripts/airtable'
 //
 // create books list
 //
-const createBooksElements = (booksData, authorsData, userData) => {
+const createBooksElements = (booksData, authorsData) => {
   const booksWrapper = document.querySelector('.main-page .books')
   if (!booksWrapper) return
-
-  console.log(booksData)
-  console.log(authorsData)
 
   booksWrapper.innerHTML = booksData
     .filter(book => book.fields.Shown)
@@ -18,7 +15,6 @@ const createBooksElements = (booksData, authorsData, userData) => {
       return `
         <div
           class="book"
-          data-like='${userData?.fields.Bookmarks.includes(book.id) ? 1 : 0}'
           data-author='${author.fields.Name}'
           data-title='${book.fields.Name}'
           data-book-id='${book.id}'
@@ -52,7 +48,7 @@ const handleBookSelect = () => {
         mainPage.prepend(cardsWrapper)
       }
 
-      const { image, title, description, author, like, bookId } = book.dataset
+      const { image, title, description, author, bookId } = book.dataset
       let cards = document.querySelectorAll('.main-page .card')
 
       if (!cards.length) {
@@ -69,7 +65,12 @@ const handleBookSelect = () => {
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
             <label>
-              <input type="checkbox" class="sr-only" ${+like ? 'checked' : null} data-book-id='${bookId}'>
+              <input
+                type="checkbox"
+                class="sr-only"
+                ${sessionStorage.userBookmarks.includes(bookId) ? 'checked' : null}
+                data-book-id='${bookId}'
+              >
               <div class="heart"></div>
             </label>
           </div>
@@ -97,7 +98,12 @@ const handleBookSelect = () => {
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
             <label>
-              <input type="checkbox" class="sr-only" ${+like ? 'checked' : null} data-book-id='${bookId}'>
+              <input
+                type="checkbox"
+                class="sr-only"
+                ${sessionStorage.userBookmarks.includes(bookId) ? 'checked' : null}
+                data-book-id='${bookId}'
+              >
               <div class="heart"></div>
             </label>
           </div>
@@ -106,6 +112,11 @@ const handleBookSelect = () => {
         cards[0].classList.add('card_green')
         cards[1].classList.add('card_pink')
       }
+
+      const inputs = document.querySelectorAll('.card input')
+      inputs.forEach(input => {
+        input.checked = sessionStorage.userBookmarks.includes(input.dataset.bookId)
+      })
       handleLike()
     })
   })
@@ -166,17 +177,15 @@ const handleAuth = (booksData, authorsData) => {
 
     const users = await getData('Users')
 
-    console.log(login)
-    console.log(btoa(encodeURIComponent(login)))
-
     if (users.some(user => user.fields.Login === btoa(encodeURIComponent(login)))) {
       const user = users.find(user => user.fields.Login === btoa(encodeURIComponent(login)))
       console.log(`Hello, ${user.fields.Name}!`)
       sessionStorage.setItem('userName', user.fields.Name)
       sessionStorage.setItem('userId', user.id)
+      sessionStorage.setItem('userBookmarks', user.fields.Bookmarks)
       input.value = ''
       close.click()
-      createBooksElements(booksData, authorsData, user)
+      createBooksElements(booksData, authorsData)
       handleBookSelect()
       handleLike()
     } else {
@@ -204,9 +213,13 @@ const handleLike = () => {
       const bookId = input.dataset.bookId
 
       if (input.checked) {
-        updateItem('Users', {itemId: userId, bookmarks: [...user.fields.Bookmarks, bookId]})
+        const bookmarks = [...user.fields.Bookmarks, bookId]
+        updateItem('Users', { itemId: userId, bookmarks })
+        sessionStorage.setItem('userBookmarks', bookmarks)
       } else {
-        updateItem('Users', {itemId: userId, bookmarks: user.fields.Bookmarks.filter(bId => bId !== bookId)})
+        const bookmarks = user.fields.Bookmarks.filter(bId => bId !== bookId)
+        updateItem('Users', { itemId: userId, bookmarks })
+        sessionStorage.setItem('userBookmarks', bookmarks)
       }
     })
   })

@@ -2,14 +2,18 @@ const base = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}`
 
 export const getData = async table => {
   const response = await fetch(`${base}/${table}?api_key=${import.meta.env.VITE_AIRTABLE_KEY}`)
+  const data = await response.json()
+  console.log('getData -', table, data.records)
 
-  return (await response.json()).records
+  return data.records
 }
 
-export const getItem = async (table, bookId) => {
-  const response = await fetch(`${base}/${table}/${bookId}?api_key=${import.meta.env.VITE_AIRTABLE_KEY}`)
+export const getItem = async (table, itemId) => {
+  const response = await fetch(`${base}/${table}/${itemId}?api_key=${import.meta.env.VITE_AIRTABLE_KEY}`)
+  const dataItem = await response.json()
+  console.log('getItem -', table, itemId, dataItem)
 
-  return await response.json()
+  return dataItem
 }
 
 export const addItem = async (table, fields) => {
@@ -22,7 +26,8 @@ export const addItem = async (table, fields) => {
   })
 
   const response = await airtableResult.json()
-  console.log('addItem -', response)
+  console.log('addItem -', table, response)
+
   return response
 }
 
@@ -50,5 +55,6 @@ export const updateItem = async (
     }
   })
 
-  console.log('updateItem -', await airtableResult.json())
+  const response = await airtableResult.json()
+  console.log('updateItem -', table, response)
 }

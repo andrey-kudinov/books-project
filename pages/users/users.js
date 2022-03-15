@@ -25,6 +25,7 @@ const handleAddUser = async () => {
     const fields = {
       Avatar: [{ url: avaUrl }],
       Name: name,
+      Login: btoa(encodeURIComponent(name)),
       About: about,
       Admin: role === 'admin',
       Shown: true
@@ -40,7 +41,7 @@ const handleAddUser = async () => {
       <span class="user__name clm2">${name}</span>
       <div class="user__about clm3"><p>${about}</p></div>
       <span class="user__role clm4">${roleTitle}</span>
-      <button class="users-page__button user__remove" data-id="${newUser.records[0].id}">Remove user</button>
+      <button class="users-page__button user__remove btn" data-id="${newUser.records[0].id}">Remove user</button>
     `
     users.prepend(user)
 
@@ -75,7 +76,7 @@ const createUsersElements = (usersData) => {
           <span class="user__name clm2">${user.fields.Name}</span>
           <div class="user__about clm3"><p>${user.fields.About}</p></div>
           <span class="user__role clm4">${user.fields.Admin ? 'Admin' : 'Regular User'}</span>
-          <button class="users-page__button user__remove" data-id="${user.id}">Remove user</button>
+          <button class="users-page__button user__remove btn" data-id="${user.id}">Remove user</button>
         </div>
       `
     })

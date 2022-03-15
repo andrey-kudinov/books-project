@@ -1,15 +1,11 @@
-import { getData } from './scripts/airtable'
+import { getData, updateItem } from './scripts/airtable'
 
 //
 // create books list
 //
-const createBooksElements = async () => {
+const createBooksElements = (booksData, authorsData, userData) => {
   const booksWrapper = document.querySelector('.main-page .books')
   if (!booksWrapper) return
-
-  const booksData = await getData('Books')
-  booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
-  const authorsData = await getData('Authors')
 
   console.log(booksData)
   console.log(authorsData)
@@ -22,8 +18,10 @@ const createBooksElements = async () => {
       return `
         <div
           class="book"
+          data-like='${userData?.fields.Bookmarks.includes(book.id) ? 1 : 0}'
           data-author='${author.fields.Name}'
           data-title='${book.fields.Name}'
+          data-book-id='${book.id}'
           data-description='${book.fields.Synopsis}'
           data-image=${book.fields['Cover Photo'] ? book.fields['Cover Photo'][0].thumbnails.large.url : ''}
         >
@@ -54,28 +52,24 @@ const handleBookSelect = () => {
         mainPage.prepend(cardsWrapper)
       }
 
-      const { image, title, description, author } = book.dataset
+      const { image, title, description, author, like, bookId } = book.dataset
       let cards = document.querySelectorAll('.main-page .card')
 
       if (!cards.length) {
         const card = document.createElement('div')
         card.classList.add('recently__card', 'card', 'card_green')
         card.innerHTML = `
-          <div class="card__image">
-            <img src=${image} alt="" />
-          </div>
+          <div class="card__image"><img src=${image} alt="${title}" /></div>
 
           <div class="card__empty"></div>
 
           <div class="card__info">
             <h3>${title}</h3>
-            <p class="card__desc">
-              ${description}
-            </p>
+            <p class="card__desc">${description}</p>
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
             <label>
-              <input type="checkbox" class="sr-only">
+              <input type="checkbox" class="sr-only" ${+like ? 'checked' : null} data-book-id='${bookId}'>
               <div class="heart"></div>
             </label>
           </div>
@@ -93,21 +87,17 @@ const handleBookSelect = () => {
         cards[1].innerHTML = cards[0].innerHTML
         cards[0].dataset.title = title
         cards[0].innerHTML = `
-          <div class="card__image">
-            <img src=${image} alt=${title} />
-          </div>
+          <div class="card__image"><img src=${image} alt=${title} /></div>
 
           <div class="card__empty"></div>
 
           <div class="card__info">
             <h3>${title}</h3>
-            <p class="card__desc">
-              ${description}
-            </p>
+            <p class="card__desc">${description}</p>
             <p class="card__genre">${author}</p>
             <button>Now Read!</button>
             <label>
-              <input type="checkbox" class="sr-only">
+              <input type="checkbox" class="sr-only" ${+like ? 'checked' : null} data-book-id='${bookId}'>
               <div class="heart"></div>
             </label>
           </div>
@@ -116,6 +106,7 @@ const handleBookSelect = () => {
         cards[0].classList.add('card_green')
         cards[1].classList.add('card_pink')
       }
+      handleLike()
     })
   })
 }
@@ -162,8 +153,9 @@ const modalClose = () => {
 //
 // handle auth
 //
-const handleAuth = () => {
+const handleAuth = (booksData, authorsData) => {
   const button = document.querySelector('.login')
+  const close = document.querySelector('.modal .close')
   const modal = document.querySelector('.modal')
   const input = document.querySelector('.modal input')
   if (!button || !input) return
@@ -171,15 +163,25 @@ const handleAuth = () => {
   const auth = async () => {
     const login = input.value
     if (!login) return
-  
+
     const users = await getData('Users')
 
+    console.log(login)
+    console.log(btoa(encodeURIComponent(login)))
+
     if (users.some(user => user.fields.Login === btoa(encodeURIComponent(login)))) {
-      console.log(`Hello, ${users.find(user => user.fields.Login === btoa(encodeURIComponent(login))).fields.Name}!`)
+      const user = users.find(user => user.fields.Login === btoa(encodeURIComponent(login)))
+      console.log(`Hello, ${user.fields.Name}!`)
+      sessionStorage.setItem('userName', user.fields.Name)
+      sessionStorage.setItem('userId', user.id)
       input.value = ''
-      modalClose()
+      close.click()
+      createBooksElements(booksData, authorsData, user)
+      handleBookSelect()
+      handleLike()
     } else {
       console.log('Hello, stranger!')
+      close.click()
     }
   }
 
@@ -187,17 +189,44 @@ const handleAuth = () => {
 }
 
 //
+// handle like
+//
+const handleLike = () => {
+  const inputs = document.querySelectorAll('.card input')
+  const userId = sessionStorage.userId
+
+  if (!inputs || !userId) return
+
+  inputs.forEach(input => {
+    input.addEventListener('change', async () => {
+      const users = await getData('Users')
+      const user = users.find(user => user.id === userId)
+      const bookId = input.dataset.bookId
+
+      if (input.checked) {
+        updateItem('Users', {itemId: userId, bookmarks: [...user.fields.Bookmarks, bookId]})
+      } else {
+        updateItem('Users', {itemId: userId, bookmarks: user.fields.Bookmarks.filter(bId => bId !== bookId)})
+      }
+    })
+  })
+}
+
+//
 // async start main page
 //
 const startMainPage = async () => {
   if (!document.querySelector('.main-page')) return
-  await createBooksElements()
+  const booksData = await getData('Books')
+  booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
+  const authorsData = await getData('Authors')
+  createBooksElements(booksData, authorsData)
   document.querySelector('.main-page').style.opacity = 1
   document.querySelector('.main-page .search').style.display = 'flex'
   handleBookSelect()
   modalOpen()
   modalClose()
-  handleAuth()
+  handleAuth(booksData, authorsData)
 }
 
 window.addEventListener('DOMContentLoaded', () => {

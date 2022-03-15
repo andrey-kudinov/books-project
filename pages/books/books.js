@@ -64,12 +64,9 @@ const addSelectElement = authorsData => {
 //
 // create books list
 //
-const createBooksElements = (authorsData, booksData) => {
-  const books = document.querySelector('.books-page .books')
+export const createBooksElements = ({selector, authorsData, booksData, buttonLabel}) => {
+  const books = document.querySelector(selector)
   if (!books) return
-
-  console.log(booksData)
-  console.log(authorsData)
 
   books.innerHTML = booksData
     .filter(book => book.fields.Shown)
@@ -87,7 +84,7 @@ const createBooksElements = (authorsData, booksData) => {
           <span class="book__title clm2">${book.fields.Name}</span>
           <div class="book__synopsis clm3"><p>${book.fields.Synopsis}</p></div>
           <span class="book__author clm4">${author.fields.Name}</span>
-          <button class="books-page__button book__remove btn" data-id="${book.id}">Remove book</button>
+          <button class="books-page__button book__remove btn" data-id="${book.id}">${buttonLabel}</button>
         </div>
       `
     })
@@ -121,7 +118,7 @@ const startBooksPage = async () => {
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
   const authorsData = await getData('Authors')
   addSelectElement(authorsData)
-  createBooksElements(authorsData, booksData)
+  createBooksElements({selector: '.books-page .books', authorsData, booksData, buttonLabel: 'Remove book'})
   handleUploadImage('.add-book__upload-image')
   document.querySelector('.books-page').style.opacity = 1
   await handleAddBook(authorsData)

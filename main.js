@@ -140,7 +140,6 @@ const modalOpen = ({ trigger, modal }) => {
 
     if (modal === '.modal-profile') {
       input.placeholder = sessionStorage.userName
-      handleUploadImage('.upload-image')
     }
   })
 }
@@ -190,18 +189,18 @@ const setSessionStorage = user => {
 //
 const handleSave = () => {
   const button = document.querySelector('.modal-profile .save')
-  const userId = sessionStorage.userId
   const input = document.querySelector('.modal-profile input')
   const avatar = document.querySelector('.upload-image')
   
-  if (!button || !userId) return
+  if (!button) return
   
   button.addEventListener('click', async () => {
+    const userId = sessionStorage.userId
     const avaUrl = avatar.dataset.url
     const name = input.value
-    let updatedUser
-    if (!name) return
+    if (!name || !userId) return
 
+    let updatedUser
     if (avaUrl) {
       updatedUser = await updateItem('Users', { itemId: userId, name, avaUrl })
     } else {
@@ -209,9 +208,9 @@ const handleSave = () => {
     }
 
     if (updatedUser) {
-      console.log('updatedUser -', updatedUser);
       setSessionStorage(updatedUser)
       sessionStorage.setItem('userAvatar', updatedUser.fields['Avatar'][0].url || updatedUser.fields['Avatar'][0].thumbnails?.large.url)
+      input.placeholder = name
     }
     input.value = ''
     const close = document.querySelector('.modal-profile .close')
@@ -387,3 +386,7 @@ const startMainPage = async () => {
 window.addEventListener('DOMContentLoaded', () => {
   startMainPage()
 })
+
+window.onload = () => {
+  handleUploadImage('.upload-image')
+}

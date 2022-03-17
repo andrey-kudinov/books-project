@@ -7,7 +7,7 @@ import './books.scss'
 // Add new book
 //
 const handleAddBook = async (authorsData) => {
-  const button = document.querySelector('.add-book__add')
+  const button = document.querySelector('.add-book__upload-image')
   if (!button) return
 
   button.addEventListener('click', async () => {
@@ -119,7 +119,6 @@ const startBooksPage = async () => {
   const authorsData = await getData('Authors')
   addSelectElement(authorsData)
   createBooksElements({selector: '.books-page .books', authorsData, booksData, buttonLabel: 'Remove book'})
-  handleUploadImage('.add-book__upload-image')
   document.querySelector('.books-page').style.opacity = 1
   await handleAddBook(authorsData)
   removeBook()
@@ -128,3 +127,7 @@ const startBooksPage = async () => {
 window.addEventListener('DOMContentLoaded', () => {
   startBooksPage()
 })
+
+window.onload = () => {
+  handleUploadImage('.add-book__upload-image')
+}

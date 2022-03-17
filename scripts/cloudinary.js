@@ -1,4 +1,4 @@
-export const handleUploadImage = (selector) => {
+export const handleUploadImage = selector => {
   const button = document.querySelector(selector)
   const myWidget = cloudinary.createUploadWidget(
     {
@@ -21,7 +21,7 @@ export const handleUploadImage = (selector) => {
       myWidget.open()
     },
     false
-    )
+  )
 }
 
 //

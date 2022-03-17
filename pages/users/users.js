@@ -8,7 +8,7 @@ import './users.scss'
 // Add new user
 //
 const handleAddUser = async () => {
-  const button = document.querySelector('.add-user__add')
+  const button = document.querySelector('.add-user__upload-image')
   if (!button) return
 
   button.addEventListener('click', async () => {
@@ -111,7 +111,6 @@ const startUsersPage = async () => {
   const usersData = await getData('Users')
   usersData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
   createUsersElements(usersData)
-  handleUploadImage('.add-user__upload-image')
   document.querySelector('.users-page').style.opacity = 1
   await handleAddUser()
   removeUser()
@@ -120,3 +119,7 @@ const startUsersPage = async () => {
 window.addEventListener('DOMContentLoaded', () => {
   startUsersPage()
 })
+
+window.onload = () => {
+  handleUploadImage('.add-user__upload-image')
+}

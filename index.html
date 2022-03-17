@@ -53,6 +53,16 @@
                   <span>Auth</span>
                 </a>
               </li>
+
+              <li class="nav__item nav__profile profile-link">
+                <a href="#">
+                  <img class="placeholder" src="./images/profile.svg" alt="profile" />
+                  <div class="avatar-wrapper">
+                    <img class="avatar" src="./images/profile.svg" alt="profile" />
+                  </div>
+                  <span>Profile</span>
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
@@ -93,11 +103,24 @@
         <div class="books"></div>
       </section>
       <div class="overlay">
-        <div class="modal">
+        <div class="modal modal-auth">
           <input type="text" placeholder="Login">
           <div class="modal__buttons">
             <button class="btn close">Close</button>
-            <button class="btn login">Sing in</button>
+            <button class="btn login">Sign in</button>
+          </div>
+        </div>
+
+        <div class="modal modal-profile">
+          <div>
+            <button class="upload-image btn">Change avatar</button>
+            <input type="text" placeholder="Name">
+          </div>
+
+          <div class="modal__buttons">
+            <button class="btn close">Close</button>
+            <button class="btn save">Save</button>
+            <button class="btn logout">Sign out</button>
           </div>
         </div>
       </div>

@@ -179,7 +179,7 @@ const setSessionStorage = user => {
   sessionStorage.setItem('userName', user.fields?.Name)
   sessionStorage.setItem('userId', user.id)
   sessionStorage.setItem('isAdmin', user.fields?.Admin)
-  sessionStorage.setItem('userAvatar', user.fields['Avatar'][0].thumbnails?.small.url || user.fields['Avatar'][0].url)
+  sessionStorage.setItem('userAvatar', user.fields['Avatar'][0].thumbnails?.large.url || user.fields['Avatar'][0].url)
   if (user.fields?.Bookmarks) {
     sessionStorage.setItem('userBookmarks', user.fields?.Bookmarks)
   }
@@ -211,7 +211,7 @@ const handleSave = () => {
     if (updatedUser) {
       console.log('updatedUser -', updatedUser);
       setSessionStorage(updatedUser)
-      sessionStorage.setItem('userAvatar', updatedUser.fields['Avatar'][0].thumbnails?.small.url || updatedUser.fields['Avatar'][0].url)
+      sessionStorage.setItem('userAvatar', updatedUser.fields['Avatar'][0].url || updatedUser.fields['Avatar'][0].thumbnails?.large.url)
     }
     input.value = ''
     const close = document.querySelector('.modal-profile .close')

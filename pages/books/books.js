@@ -7,7 +7,7 @@ import './books.scss'
 // Add new book
 //
 const handleAddBook = async (authorsData) => {
-  const button = document.querySelector('.add-book__upload-image')
+  const button = document.querySelector('.add-book__add')
   if (!button) return
 
   button.addEventListener('click', async () => {

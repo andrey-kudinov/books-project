@@ -8,7 +8,7 @@ import './users.scss'
 // Add new user
 //
 const handleAddUser = async () => {
-  const button = document.querySelector('.add-user__upload-image')
+  const button = document.querySelector('.add-user__add')
   if (!button) return
 
   button.addEventListener('click', async () => {

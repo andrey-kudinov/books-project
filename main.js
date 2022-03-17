@@ -1,5 +1,6 @@
-import { getData, updateItem } from './scripts/airtable'
+import { getData, updateItem, addItem } from './scripts/airtable'
 import { showOrHideLinks, setHeader } from './scripts/header'
+import { handleUploadImage, addUploadWidgetScript } from './scripts/cloudinary'
 
 //
 // create books list
@@ -124,40 +125,123 @@ const handleBookSelect = () => {
 //
 // open modal
 //
-const modalOpen = () => {
-  const button = document.querySelector('.nav__auth')
+const modalOpen = ({ trigger, modal }) => {
+  const button = document.querySelector(trigger)
   if (!button) return
 
   const overlay = document.querySelector('.overlay')
-  const modal = document.querySelector('.modal')
-  const input = document.querySelector('.modal input')
+  const popup = document.querySelector(modal)
+  const input = popup.querySelector('input')
 
   button.addEventListener('click', () => {
     overlay.style.display = 'grid'
-    modal.style.display = 'flex'
+    popup.style.display = 'flex'
     input.focus()
+
+    if (modal === '.modal-profile') {
+      input.placeholder = sessionStorage.userName
+      handleUploadImage('.upload-image')
+    }
   })
 }
 
 //
 // close modal
 //
-const modalClose = () => {
-  const button = document.querySelector('.modal .close')
-  if (!button) return
+const modalClose = ({ modal }) => {
+  const popup = document.querySelector(modal)
+  if (!popup) return
 
+  const button = popup.querySelector('.close')
   const overlay = document.querySelector('.overlay')
-  const modal = document.querySelector('.modal')
 
   const close = e => {
     overlay.style.display = 'none'
-    modal.style.display = 'none'
+    popup.style.display = 'none'
+    const uploadImageButton = document.querySelector('.upload-image')
+    uploadImageButton.textContent = 'Change avatar'
+    uploadImageButton.dataset.url = ''
+    uploadImageButton.disabled = false
   }
 
   button.addEventListener('click', close)
   document.addEventListener('keydown', event =>
-    event.key === 'Escape' && modal.style.display === 'flex' ? close() : null
+    event.key === 'Escape' && popup.style.display === 'flex' ? close() : null
   )
+}
+
+//
+// handle session storage
+//
+const setSessionStorage = user => {
+  if (!user) return
+  sessionStorage.clear()
+  sessionStorage.setItem('userName', user.fields?.Name)
+  sessionStorage.setItem('userId', user.id)
+  sessionStorage.setItem('isAdmin', user.fields?.Admin)
+  sessionStorage.setItem('userAvatar', user.fields['Avatar'][0].thumbnails?.small.url || user.fields['Avatar'][0].url)
+  if (user.fields?.Bookmarks) {
+    sessionStorage.setItem('userBookmarks', user.fields?.Bookmarks)
+  }
+}
+
+//
+// handle save
+//
+const handleSave = () => {
+  const button = document.querySelector('.modal-profile .save')
+  const userId = sessionStorage.userId
+  const input = document.querySelector('.modal-profile input')
+  const avatar = document.querySelector('.upload-image')
+  
+  if (!button || !userId) return
+  
+  button.addEventListener('click', async () => {
+    const avaUrl = avatar.dataset.url
+    const name = input.value
+    let updatedUser
+    if (!name) return
+
+    if (avaUrl) {
+      updatedUser = await updateItem('Users', { itemId: userId, name, avaUrl })
+    } else {
+      updatedUser = await updateItem('Users', { itemId: userId, name })
+    }
+
+    if (updatedUser) {
+      console.log('updatedUser -', updatedUser);
+      setSessionStorage(updatedUser)
+      sessionStorage.setItem('userAvatar', updatedUser.fields['Avatar'][0].thumbnails?.small.url || updatedUser.fields['Avatar'][0].url)
+    }
+    input.value = ''
+    const close = document.querySelector('.modal-profile .close')
+    close.click()
+    setAvatar()
+  })
+}
+
+//
+// handle logout
+//
+const handleLogout = (booksData, authorsData) => {
+  const button = document.querySelector('.modal-profile .logout')
+  if (!button) return
+  button.addEventListener('click', () => {
+    sessionStorage.clear()
+    createBooksElements(booksData, authorsData)
+    handleBookSelect()
+    handleLike()
+    showOrHideLinks({ action: 'hide', selectors: ['.profile-link'] })
+    showOrHideLinks({ action: 'show', selectors: ['.auth-link'] })
+    const input = document.querySelector('.modal-auth input')
+    input.placeholder = 'Login'
+    const avatarWrapper = document.querySelector('.nav__profile .avatar-wrapper')
+    const placeholder = document.querySelector('.nav__profile .placeholder')
+    avatarWrapper.style.display = 'none'
+    placeholder.style.display = 'block'
+    const close = document.querySelector('.modal-profile .close')
+    close.click()
+  })
 }
 
 //
@@ -179,25 +263,56 @@ const handleAuth = (booksData, authorsData) => {
     if (users.some(user => user.fields.Login === btoa(encodeURIComponent(login)))) {
       const user = users.find(user => user.fields.Login === btoa(encodeURIComponent(login)))
       console.log(`Hello, ${user.fields.Name}!`)
-      sessionStorage.setItem('userName', user.fields.Name)
-      sessionStorage.setItem('userId', user.id)
-      sessionStorage.setItem('userBookmarks', user.fields.Bookmarks)
-      sessionStorage.setItem('isAdmin', user.fields.Admin)
-      input.value = ''
-      close.click()
-      createBooksElements(booksData, authorsData)
-      handleBookSelect()
-      handleLike()
+      setSessionStorage(user)
+
       if (user.fields.Admin) {
         showOrHideLinks({ action: 'show', selectors: ['.books-link', '.users-link'] })
       }
     } else {
-      console.log('Hello, stranger!')
-      close.click()
+      const url = 'https://res.cloudinary.com/dkqwi0tah/image/upload/v1647533839/photo_2022-03-17_20.16.41_ctnqex.jpg'
+      const fields = {
+        Avatar: [{ url }],
+        Name: login,
+        Login: btoa(encodeURIComponent(login)),
+        About: 'self-registered',
+        Admin: false,
+        Shown: true
+      }
+
+      const newUser = await addItem('Users', fields)
+      console.log('newUser -', newUser.records[0])
+      setSessionStorage(newUser.records[0])
+
+      console.log(`Hello, ${login}!`)
     }
+
+    if (sessionStorage.userId) {
+      showOrHideLinks({ action: 'show', selectors: ['.profile-link'] })
+      showOrHideLinks({ action: 'hide', selectors: ['.auth-link'] })
+
+      setAvatar()
+    }
+
+    input.value = ''
+    close.click()
+    createBooksElements(booksData, authorsData)
+    handleBookSelect()
+    handleLike()
   }
 
   button.addEventListener('click', auth)
+}
+
+//
+// set avatar
+//
+const setAvatar = () => {
+  const avatar = document.querySelector('.nav__profile .avatar')
+  const avatarWrapper = document.querySelector('.nav__profile .avatar-wrapper')
+  const placeholder = document.querySelector('.nav__profile .placeholder')
+  avatar.src = sessionStorage.userAvatar
+  avatarWrapper.style.display = 'block'
+  placeholder.style.display = 'none'
 }
 
 //
@@ -220,7 +335,10 @@ const handleLike = () => {
       const bookId = input.dataset.bookId
 
       if (input.checked) {
-        const bookmarks = sessionStorage.userBookmarks ? [...sessionStorage.userBookmarks.split(','), bookId] : [bookId]
+        const bookmarks =
+          sessionStorage.userBookmarks && !sessionStorage.userBookmarks.includes('undefined')
+            ? [...sessionStorage.userBookmarks.split(','), bookId]
+            : [bookId]
         if (userId) {
           updateItem('Users', { itemId: userId, bookmarks })
         }
@@ -241,17 +359,29 @@ const handleLike = () => {
 //
 const startMainPage = async () => {
   if (!document.querySelector('.main-page')) return
+  addUploadWidgetScript()
   setHeader()
+  if (sessionStorage.userId) {
+    showOrHideLinks({ action: 'show', selectors: ['.profile-link'] })
+    showOrHideLinks({ action: 'hide', selectors: ['.auth-link'] })
+    setAvatar()
+  }
   const booksData = await getData('Books')
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
   const authorsData = await getData('Authors')
   createBooksElements(booksData, authorsData)
+
   document.querySelector('.main-page').style.opacity = 1
   document.querySelector('.main-page .search').style.display = 'flex'
+
   handleBookSelect()
-  modalOpen()
-  modalClose()
+  modalOpen({ trigger: '.nav__auth', modal: '.modal-auth' })
+  modalOpen({ trigger: '.nav__profile', modal: '.modal-profile' })
+  modalClose({ modal: '.modal-profile' })
+  modalClose({ modal: '.modal-auth' })
   handleAuth(booksData, authorsData)
+  handleLogout(booksData, authorsData)
+  handleSave()
 }
 
 window.addEventListener('DOMContentLoaded', () => {

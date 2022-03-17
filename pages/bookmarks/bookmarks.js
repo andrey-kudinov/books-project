@@ -41,9 +41,20 @@ const startBookmarksPage = async () => {
   if (sessionStorage.userId) {
     users = await getData('Users')
     user = users.find(user => user.id === sessionStorage.userId)
-    booksData = booksData.filter(book => user?.fields.Bookmarks.includes(book.id))
+    const userBookmarks = user?.fields?.Bookmarks ?? []
+    booksData = booksData.filter(book => userBookmarks.includes(book.id))
     sessionStorage.setItem('userBookmarks', user.fields.Bookmarks)
   } else {
+    const userBookmarks = sessionStorage.userBookmarks
+    if (!userBookmarks) {
+      const heading = document.createElement('h2')
+      heading.style.color = '#fff'
+      heading.style.padding = '10rem'
+      heading.style.margin = '0 auto'
+      heading.textContent = 'No bookmarks yet'
+      document.querySelector('main').before(heading)
+      return
+    }
     booksData = booksData.filter(book => sessionStorage.userBookmarks.includes(book.id))
   }
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))

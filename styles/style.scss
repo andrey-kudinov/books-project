@@ -218,6 +218,32 @@ main {
       }
     }
   }
+
+  .avatar-wrapper {
+    display: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: .3s;
+
+    &:hover {
+      transform: scale(6);
+      overflow: visible;
+
+      img {
+        transform: translate(-50%, 50%);
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .3s;
+  }
 }
 
 .nav__toggle {
@@ -461,5 +487,16 @@ footer {
     display: flex;
     justify-content: space-around;
     margin-top: 2rem;
+  }
+}
+
+.modal-profile {
+  div {
+    display: flex;
+
+    button {
+      margin-right: 1rem;
+      flex-shrink: 0;
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { getData, addItem, updateItem } from '../../scripts/airtable'
 import { handleUploadImage, addUploadWidgetScript } from '../../scripts/cloudinary'
+import { setHeader } from '../../scripts/header'
 
 import './users.scss'
 
@@ -105,6 +106,7 @@ const removeUser = () => {
 //
 const startUsersPage = async () => {
   if (!document.querySelector('.users-page')) return
+  setHeader()
   addUploadWidgetScript()
   const usersData = await getData('Users')
   usersData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))

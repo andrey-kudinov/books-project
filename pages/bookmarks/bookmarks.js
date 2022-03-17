@@ -1,5 +1,6 @@
 import { createBooksElements } from '../books/books'
 import { getData, updateItem } from '../../scripts/airtable'
+import { setHeader } from '../../scripts/header'
 
 //
 // unlike book
@@ -32,6 +33,7 @@ const unlikeBook = user => {
 // async start bookmarks page
 //
 const startBookmarksPage = async () => {
+  setHeader()
   if (!document.querySelector('.bookmarks-page')) return
   let booksData = await getData('Books')
   let users

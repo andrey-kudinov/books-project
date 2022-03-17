@@ -40,7 +40,10 @@ export const updateItem = async (
   if (coverUrl) fields['Cover Photo'] = [{ url: coverUrl }]
   if (synopsis) fields.Synopsis = synopsis
   if (authorId) fields.Author = authorId
-  if (name) fields.Name = name
+  if (name) {
+    fields.Name = name
+    fields.Login = btoa(encodeURIComponent(name))
+  }
   if (avaUrl) fields.Avatar = [{ url: avaUrl }]
   if (role) fields.Role = role
   if (about) fields.About = about
@@ -57,4 +60,6 @@ export const updateItem = async (
 
   const response = await airtableResult.json()
   console.log('updateItem -', table, response)
+
+  return response
 }

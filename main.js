@@ -1,4 +1,5 @@
 import { getData, updateItem } from './scripts/airtable'
+import { showOrHideLinks, setHeader } from './scripts/header'
 
 //
 // create books list
@@ -181,11 +182,15 @@ const handleAuth = (booksData, authorsData) => {
       sessionStorage.setItem('userName', user.fields.Name)
       sessionStorage.setItem('userId', user.id)
       sessionStorage.setItem('userBookmarks', user.fields.Bookmarks)
+      sessionStorage.setItem('isAdmin', user.fields.Admin)
       input.value = ''
       close.click()
       createBooksElements(booksData, authorsData)
       handleBookSelect()
       handleLike()
+      if (user.fields.Admin) {
+        showOrHideLinks({ action: 'show', selectors: ['.books-link', '.users-link'] })
+      }
     } else {
       console.log('Hello, stranger!')
       close.click()
@@ -236,6 +241,7 @@ const handleLike = () => {
 //
 const startMainPage = async () => {
   if (!document.querySelector('.main-page')) return
+  setHeader()
   const booksData = await getData('Books')
   booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
   const authorsData = await getData('Authors')

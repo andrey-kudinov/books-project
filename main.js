@@ -279,7 +279,6 @@ const handleAuth = (booksData, authorsData) => {
       }
 
       const newUser = await addItem('Users', fields)
-      console.log('newUser -', newUser.records[0])
       setSessionStorage(newUser.records[0])
 
       console.log(`Hello, ${login}!`)

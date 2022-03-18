@@ -226,6 +226,7 @@ const handleLogout = (booksData, authorsData) => {
   const button = document.querySelector('.modal-profile .logout')
   if (!button) return
   button.addEventListener('click', () => {
+    console.log(`See you later, ${sessionStorage.userName}!`)
     sessionStorage.clear()
     createBooksElements(booksData, authorsData)
     handleBookSelect()
@@ -239,6 +240,7 @@ const handleLogout = (booksData, authorsData) => {
     avatarWrapper.style.display = 'none'
     placeholder.style.display = 'block'
     const close = document.querySelector('.modal-profile .close')
+    setHeader()
     close.click()
   })
 }

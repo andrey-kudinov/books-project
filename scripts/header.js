@@ -1,13 +1,3 @@
-export const removeLinks = selectors => {
-  if (!selectors || !selectors.length) return
-
-  selectors.forEach(selector => {
-    const element = document.querySelector(selector)
-    if (!element) return
-    element.remove()
-  })
-}
-
 export const showOrHideLinks = ({ action, selectors }) => {
   if (!selectors || !selectors.length) return
 

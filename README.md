@@ -1,4 +1,4 @@
-# books-project
+# Books Project
 
 It is a project for my friend, who study in university and need some help with web development course.
 
@@ -15,7 +15,7 @@ There are three roles:
 - **Admin** can do the same things that user can do user. Also he can add/remove books and users.
 
 ## Disadvantages
-I've wanted to do it with Firebase. I worked a lot with Firebase, so after thinking, I've chosen AirTable like something new for me.
+I wanted to use Firebase. I've worked a lot with Firebase, so after thinking, I choose AirTable like something new for me.
 AirTable isn’t equal Firebase. It haven’t got any auth methods. So my auth is quite simple and doesn’t defend from hacks.
 
 ## Advanjedges
@@ -23,8 +23,8 @@ My design and animations look pretty interesting.
 Also there is a good code base in the project.
 
 ## Peculiarity
-I created this project for my friend, who doesn’t know JS as good as I want. So I didn’t use any frameworks, like React or Vue.
-I understand with frameworks the project code base would be less a lot. But I think Vanilla JS is better for understanding that some framework.
+I created this project for my friend, who doesn’t know JS as good as I want. So I didn’t use any frameworks like React or Vue.
+I understand that with frameworks, the project's codebase will be smaller. But I think Vanilla JS is better to understand than some kind of framework.
 
 ## Feedback
 If you have any questions, please don’t hesitate to contact me.

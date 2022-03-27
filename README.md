@@ -10,12 +10,12 @@ There are three roles:
 
 - **Guest** can add to bookmarks (session storage);
 
-- **User** can add bookmarks. Bookmarks save in AirTable. User can update nickname and avatar. New User is adding automatically when he sing in with login that there isn’t in AirTable;
+- **User** can add bookmarks. Bookmarks save in AirTable. User can update nickname and avatar. New User is adding automatically when he sings in/up with login that there isn’t in AirTable;
 
 - **Admin** can do the same things what can do user. Also he can add/remove books and users.
 
 ## Disadvantages
-I'he wanted to do it with Firebase. I worked a lot with Firebase, so after thinking, I've chosen AirTable like something new for me.
+I've wanted to do it with Firebase. I worked a lot with Firebase, so after thinking, I've chosen AirTable like something new for me.
 AirTable isn’t equal Firebase. It haven’t got any auth methods. So my auth is quite simple and doesn’t defend from hacks.
 
 ## Advanjedges

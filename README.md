@@ -1,21 +1,34 @@
 # books-project
 
+It is a project for my friend, who study in university and need some help with web development course.
 
-Получилось что есть три сценария:
+[Demo](https://books-university-project.netlify.app/)
 
-- гость может ставить лайки (т.е. добавлять в избранное). Инфа о его действиях живет пока живет вкладка
+## Description
 
-- зареганный юзер (юзер регается автоматически когда вводит логин, которого нет в базе данных) - он может делать тоже самое что гость, только его действия сохраняются в БД. Так же он может сменить ник и аватарку
+There are three roles:
 
-- админ - может делать тоже самое, что юзер, плюс имеет доступ к удалению/добавлению книг и удалению/добавлению юзеров
+- **Guest** can add to bookmarks (session storage);
 
-Думаю добавить функционал по добавлению и удалению авторов.
-И на главной странице есть фильтр, у него еще нет функционала.
+- **User** can add bookmarks. Bookmarks save in AirTable. User can update nickname and avatar. New User is adding automatically when he sing in with login that there isn’t in AirTable;
 
-Из минусов - AirTable в отличие от Firebase не является симуляцией бэка, в частности там нет методов авторизации. Поэтому авторизация примитивная и легко взламывается - легко получить доступ ко всем пользователям. Сайт не хакерозащищенный.
+- **Admin** can do the same things what can do user. Also he can add/remove books and users.
 
-Из плюсов - симпатично получилось
+## Disadvantages
+I'he wanted to do it with Firebase. I worked a lot with Firebase, so after thinking, I've chosen AirTable like something new for me.
+AirTable isn’t equal Firebase. It haven’t got any auth methods. So my auth is quite simple and doesn’t defend from hacks.
 
-Так как я писал изначально для Яши - я не юзал фреймворки, всё на ванильном JS. С React или Vue получился бы лучший перфоманс и примерно в два раза меньше кода. Но для понимания ванильный JS проще
+## Advanjedges
+My design and animations look pretty interesting.
+Also there is a good code base in the project.
 
-Если у вас будут вопросы - обязательно спрашивайте, я с удовольствием отвечу)
+## Peculiarity
+I created this project for my friend, who doesn’t know JS as good as I want. So I didn’t use any frameworks, like React or Vue.
+I understand with frameworks the project code base would be less a lot. But I think Vanilla JS is better for understanding that some framework.
+
+## Feedback
+If you have any questions, please don’t hesitate to contact me.
+
+## Todo
+- add functionality for add/update/remove authors
+- add logic to facet filter on home page

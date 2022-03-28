@@ -1,6 +1,6 @@
 # Books Project
 
-It is a project for my friend, who study in university and need some help with web development course.
+This is a project for my friend who studies at university and needs help with a web development course.
 
 [Demo](https://books-university-project.netlify.app/)
 

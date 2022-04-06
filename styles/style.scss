@@ -483,6 +483,10 @@ footer {
     @include input;
   }
 
+  input:not(:last-of-type) {
+    margin-bottom: 1rem;
+  }
+
   &__buttons {
     display: flex;
     justify-content: space-around;

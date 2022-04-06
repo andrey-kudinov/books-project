@@ -191,6 +191,7 @@ const handleSave = () => {
   const button = document.querySelector('.modal-profile .save')
   const input = document.querySelector('.modal-profile input')
   const avatar = document.querySelector('.upload-image')
+  input.value = sessionStorage.userName ?? ''
   
   if (!button) return
   
@@ -212,6 +213,7 @@ const handleSave = () => {
       sessionStorage.setItem('userAvatar', updatedUser.fields['Avatar'][0].url || updatedUser.fields['Avatar'][0].thumbnails?.large.url)
       input.placeholder = name
     }
+
     input.value = ''
     const close = document.querySelector('.modal-profile .close')
     close.click()
@@ -249,20 +251,23 @@ const handleLogout = (booksData, authorsData) => {
 // handle auth
 //
 const handleAuth = (booksData, authorsData) => {
-  const button = document.querySelector('.login')
+  const buttonLogin = document.querySelector('.btn-login')
+  const buttonRegister = document.querySelector('.btn-register')
   const close = document.querySelector('.modal .close')
   const modal = document.querySelector('.modal')
-  const input = document.querySelector('.modal input')
-  if (!button || !input) return
+  const inputLogin = document.querySelector('.modal .name')
+  const inputPassword = document.querySelector('.modal .password')
+  if (!buttonLogin || !inputLogin) return
 
   const auth = async () => {
-    const login = input.value
-    if (!login) return
+    const name = inputLogin.value
+    const password = inputPassword.value
+    if (!name.length || !password.length ) return
 
     const users = await getData('Users')
 
-    if (users.some(user => user.fields.Login === btoa(encodeURIComponent(login)))) {
-      const user = users.find(user => user.fields.Login === btoa(encodeURIComponent(login)))
+    if (users.some(({ fields: { Name, Password } }) => Name === name && Password === password)) {
+      const user = users.find(({ fields: { Name, Password } }) => Name === name && Password === password)
       console.log(`Hello, ${user.fields.Name}!`)
       setSessionStorage(user)
 
@@ -273,8 +278,8 @@ const handleAuth = (booksData, authorsData) => {
       const url = 'https://res.cloudinary.com/dkqwi0tah/image/upload/v1647533839/photo_2022-03-17_20.16.41_ctnqex.jpg'
       const fields = {
         Avatar: [{ url }],
-        Name: login,
-        Login: btoa(encodeURIComponent(login)),
+        Name: name,
+        Password: password,
         About: 'self-registered',
         Admin: false,
         Shown: true
@@ -283,7 +288,7 @@ const handleAuth = (booksData, authorsData) => {
       const newUser = await addItem('Users', fields)
       setSessionStorage(newUser.records[0])
 
-      console.log(`Hello, ${login}!`)
+      console.log(`Hello, ${name}!`)
     }
 
     if (sessionStorage.userId) {
@@ -293,14 +298,16 @@ const handleAuth = (booksData, authorsData) => {
       setAvatar()
     }
 
-    input.value = ''
+    inputLogin.value = ''
+    inputPassword.value = ''
     close.click()
     createBooksElements(booksData, authorsData)
     handleBookSelect()
     handleLike()
   }
 
-  button.addEventListener('click', auth)
+  buttonLogin.addEventListener('click', auth)
+  buttonRegister.addEventListener('click', auth)
 }
 
 //

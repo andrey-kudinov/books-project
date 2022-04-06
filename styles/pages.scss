@@ -15,7 +15,8 @@
   @include shadow-effect;
 
   &::placeholder {
-    color: gray;
+    color: silver;
+    opacity: .2;
   }
 
   &:hover::placeholder{

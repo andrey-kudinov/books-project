@@ -33,17 +33,15 @@ export const addItem = async (table, fields) => {
 
 export const updateItem = async (
   table,
-  { itemId, coverUrl, title, synopsis, authorId, shown, name, role, about, avaUrl, bookmarks }
+  { itemId, coverUrl, title, synopsis, authorId, shown, name, password, role, about, avaUrl, bookmarks }
 ) => {
   const fields = {}
   if (title) fields.Title = title
   if (coverUrl) fields['Cover Photo'] = [{ url: coverUrl }]
   if (synopsis) fields.Synopsis = synopsis
   if (authorId) fields.Author = authorId
-  if (name) {
-    fields.Name = name
-    fields.Login = btoa(encodeURIComponent(name))
-  }
+  if (name) fields.Name = name
+  if (password) fields.Password = password
   if (avaUrl) fields.Avatar = [{ url: avaUrl }]
   if (role) fields.Role = role
   if (about) fields.About = about

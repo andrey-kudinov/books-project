@@ -2,8 +2,6 @@ import { getData, addItem, updateItem } from '../../scripts/airtable'
 import { handleUploadImage, addUploadWidgetScript } from '../../scripts/cloudinary'
 import { setHeader } from '../../scripts/header'
 
-import './users.scss'
-
 //
 // Add new user
 //

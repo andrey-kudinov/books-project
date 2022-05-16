@@ -1,8 +1,6 @@
 import { getData, addItem, updateItem } from '../../scripts/airtable'
 import { handleUploadImage, addUploadWidgetScript } from '../../scripts/cloudinary'
 
-import './books.scss'
-
 //
 // Add new book
 //

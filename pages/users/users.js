@@ -24,7 +24,7 @@ const handleAddUser = async () => {
     const fields = {
       Avatar: [{ url: avaUrl }],
       Name: name,
-      Login: btoa(encodeURIComponent(name)),
+      Password: btoa(encodeURIComponent(name)),
       About: about,
       Admin: role === 'admin',
       Shown: true

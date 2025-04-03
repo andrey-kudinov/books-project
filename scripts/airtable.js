@@ -1,11 +1,32 @@
 const base = `https://api.airtable.com/v0/${import.meta.env.VITE_AIRTABLE_APP}`
 
 export const getData = async table => {
-  const response = await fetch(`${base}/${table}?api_key=${import.meta.env.VITE_AIRTABLE_KEY}`)
-  const data = await response.json()
-  console.log('getData -', table, data.records)
+  try {
+    const response = await fetch(`${base}/${table}?api_key=${import.meta.env.VITE_AIRTABLE_KEY}`);
 
-  return data.records
+    if (!response.ok) {
+      throw new Error ('API returned ${response.status}');
+    }
+
+    const data = await response.json()
+    console.log('getData -', table, data.records)
+
+    return data.records;
+  } catch (error) {
+    console.error('Failed to fetch', error);
+
+    const fallbackContainer = document.querySelector('.main-page');
+    if(fallbackContainer) {
+      fallbackContainer.style.opacity = 1;
+      fallbackContainer.innerHTML = `
+        <div class="error-message">
+          <div class="error-glow-box">
+            <p><span style="font-size: 50px; font-weight: bold;">Whoops!</span> <br /> <br/> The library is empty today. <br /> <br />Come back later!</p>
+          </div>
+        </div
+      `;
+    }
+  }
 }
 
 export const getItem = async (table, itemId) => {

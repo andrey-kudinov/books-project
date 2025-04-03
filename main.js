@@ -373,10 +373,11 @@ const startMainPage = async () => {
     showOrHideLinks({ action: 'hide', selectors: ['.auth-link'] })
     setAvatar()
   }
-  const booksData = await getData('Books')
-  booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime))
-  const authorsData = await getData('Authors')
-  createBooksElements(booksData, authorsData)
+  const booksData = await getData('Books');
+  if (!booksData) return;
+  booksData.sort((b, a) => a.createdTime.localeCompare(b.createdTime));
+  const authorsData = await getData('Authors');
+  createBooksElements(booksData, authorsData);
 
   document.querySelector('.main-page').style.opacity = 1
   document.querySelector('.main-page .search').style.display = 'flex'

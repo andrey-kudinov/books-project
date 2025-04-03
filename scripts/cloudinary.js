@@ -1,5 +1,7 @@
 export const handleUploadImage = selector => {
-  const button = document.querySelector(selector)
+  const button = document.querySelector(selector);
+  if (!button) return; //prevents the crash if the button is missing
+  
   const myWidget = cloudinary.createUploadWidget(
     {
       cloudName: import.meta.env.VITE_CLOUD_NAME,

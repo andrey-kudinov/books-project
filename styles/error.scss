@@ -7,10 +7,9 @@
 
 .error-glow-box {
     margin: 3rem auto;
-    height: 200px;
+    height: fit-content;
     display: flex;
     align-items: center;
-    max-width: 600px;
     padding: 2rem 3rem;
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.2);

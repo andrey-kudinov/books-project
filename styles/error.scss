@@ -1,0 +1,34 @@
+.error-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+}
+
+.error-glow-box {
+    margin: 3rem auto;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    padding: 2rem 3rem;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    font-size: 1.2rem;
+    text-align: center;
+    animation: glowPulse 3s infinite ease-in-out;
+  }
+  
+  @keyframes glowPulse {
+    0%, 100% {
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.6),
+                  0 0 60px rgba(255, 255, 255, 0.3),
+                  0 0 80px rgba(255, 255, 255, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.9),
+                  0 0 80px rgba(255, 255, 255, 0.6),
+                  0 0 100px rgba(255, 255, 255, 0.4);
+    }
+  }
+  

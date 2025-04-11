@@ -7,14 +7,13 @@ export const getData = async table => {
     }
   });
   
-  const data = await response.json()
-  console.log('getData -', table, data.records)
+  try {
     if (!response.ok) {
       throw new Error ('API returned ${response.status}');
     }
 
     const data = await response.json()
-    console.log('getData -', table, data.records)
+    console.log('getData -', { table, 'data.records': data.records });
 
     return data.records;
   } catch (error) {
@@ -41,7 +40,7 @@ export const getItem = async (table, itemId) => {
     }
   });
   const dataItem = await response.json();
-  console.log('getItem -', table, itemId, dataItem);
+  console.log('getItem -', { table, itemId, dataItem });
 
   return dataItem;
 }
@@ -57,7 +56,7 @@ export const addItem = async (table, fields) => {
   })
 
   const response = await airtableResult.json()
-  console.log('addItem -', table, response)
+  console.log('addItem -', { table, response });
 
   return response
 }
@@ -67,6 +66,7 @@ export const updateItem = async (
   { itemId, coverUrl, title, synopsis, authorId, shown, name, password, role, about, avaUrl, bookmarks }
 ) => {
   const fields = {}
+  // TODO: refactor this to use a loop
   if (title) fields.Title = title
   if (coverUrl) fields['Cover Photo'] = [{ url: coverUrl }]
   if (synopsis) fields.Synopsis = synopsis
@@ -89,7 +89,7 @@ export const updateItem = async (
   })
 
   const response = await airtableResult.json()
-  console.log('updateItem -', table, response)
+  console.log('updateItem -', { table, response });
 
   return response
 }
